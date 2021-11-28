@@ -3,10 +3,10 @@
 void display(short b[]);
 void fen(char *a, short b[]);
 short linemove(short board[], short pos, short* possible);
+short queenmove(short board[], short pos, short* possible);
 short knightmove(short board[], short pos, short *possible);
 short pawnmove(short board[], short pos, short* possible);
 short kingmove(short board[], short pos, short* possible);
-short queenmove();
 short diagonalmove(short board[], short pos, short *possible);
 void arra(short arr[]);
 short const none = 0;
@@ -16,9 +16,7 @@ void main(){
 	short board[64], po[28], tmp;
 	for(int i = 0; i < 64; i++) board[i] = none;
 	fen(string, board);
-	//display(board);
-	//tmp = diagonalmove(board, 0, linemove(board, 7, p));
-	po[0] = pawnmove(board, 39, po);
+	po[0] = pawnmove(board, 12, po);
 	arra(po);
 }
 void fen(char *a, short bo[]){
@@ -54,16 +52,27 @@ short inspect(short board[], short pos, short color){
 	if((board[pos] & color) < 8) return 2;
 	return 0;
 }
+short queenmove(short board[], short pos, short* possible){
+	int count = linemove(board, pos, possible);
+	possible += count;
+	count += diagonalmove(board, pos, possible);
+       return count;	
+}
+	
 short pawnmove(short board[], short pos, short* possible){
 	short count = 0;
 	possible++;
 	if(board[pos] > 16){
-		if(board[pos] != none){*possible = pos - 8; possible++; count++;}
-		if(pos > 47){if(board[pos] != none){*possible = pos - 16; possible++; count++;}}
+		if(board[pos - 8] == none){*possible = pos - 8; possible++; count++;
+			if(pos > 47){if(board[pos - 16] == none){*possible = pos - 16; possible++; count++;}}}
+		if(pos % 8 > 0)if(inspect(board, pos - 9, board[pos]) == 2){*possible = pos - 9; possible++; count++;}
+		if(pos % 8 < 7)if(inspect(board, pos - 7, board[pos]) == 2){*possible = pos - 7; possible++; count++;}
 	}
 	else{
-		if(board[pos] != none){*possible = pos + 8; possible++; count++;}
-		if(pos < 16){if(board[pos] != none){*possible = pos + 16; possible++; count++;}}
+		if(board[pos + 8] == none){*possible = pos + 8; possible++; count++;
+			if(pos < 16){if(board[pos + 16] == none){*possible = pos + 16; possible++; count++;}}}
+		if(pos % 8 > 0)if(inspect(board, pos + 7, board[pos]) == 2){*possible = pos + 7; possible++; count++;}
+		if(pos % 8 < 7)if(inspect(board, pos + 9, board[pos]) == 2){*possible = pos + 9; possible++; count++;}
 	}
 	return count;
 }
