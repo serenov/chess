@@ -76,16 +76,38 @@ short pawnmove(short board[], short pos, short* possible){
 	}
 	return count;
 }
-short kingmove(short board[], short pos, short* possible){
+short kingmove(short board[], short pos, short* possible, short* ismoved){
 	short count = 0;
 	possible++;
+	short castling(short v, short start){
+		ismoved += start;	
+		for(int i = 1; i < 3; i++){ if(*ismoved) return 0; ismoved++;}
+		if(v == 1) if(board[pos + 2] == none) return 1;
+		if(*(ismoved - 3)) return 0;
+		if(board[pos - 2] == none && board[pos - 3] == none) return 1;
+		return 0;
+	}
 	if(pos % 8 >= 1){
-		if(inspect(board, pos - 1, board[pos])){*possible = pos - 1; possible++; count++;}
+		if(inspeact(board, pos - 1, board[pos])){*possible = pos - 1; possible++; count++;
+			if(board[pos] & 16 = 16){
+				if(castling(-1, 4){ *possible = pos - 2; possible++; count++; *possible = pos - 3; possible++; count++;}
+			}
+			else{
+				if(castling(-1, 2){ *possible = pos - 2; possible++; count++; *possible = pos - 3; possible++; count++;}
+			}
+		}
 		if(inspect(board, pos + 7, board[pos])){if(pos + 7 < 64){*possible = pos + 7; possible++; count++;}}		
 		if(inspect(board, pos - 9, board[pos])){if(pos - 9 > 0){*possible = pos - 9; possible++; count++;}}		
 	}
 	if(7 - (pos % 8) >= 1){
-		if(inspect(board, pos + 1, board[pos])){*possible = pos + 1; possible++; count++;}
+		if(inspect(board, pos + 1, board[pos])){*possible = pos + 1; possible++; count++;
+			if(board[pos] & 16 = 16){
+				if(castling(1, 4){ *possible = pos + 2; possible++; count++;}	
+			}
+			else{
+				if(castling(1, 2){ *possible = pos + 2; possible++; count++;}	
+			}
+		}		
 		if(inspect(board, pos - 7, board[pos])){if(pos - 7 > -1)*possible = pos - 7; possible++; count++;}
 		if(inspect(board, pos + 9, board[pos])){if(pos + 9 < 64){*possible = pos + 9; possible++; count++;}}
 	}
