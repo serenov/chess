@@ -6,7 +6,7 @@ short linemove(short board[], short pos, short* possible);
 short queenmove(short board[], short pos, short* possible);
 short knightmove(short board[], short pos, short *possible);
 short pawnmove(short board[], short pos, short* possible);
-short kingmove(short board[], short pos, short* possible);
+short kingmove(short board[], short pos, short* possible, short *ismoved);
 short diagonalmove(short board[], short pos, short *possible);
 void arra(short arr[]);
 short const none = 0;
@@ -88,12 +88,12 @@ short kingmove(short board[], short pos, short* possible, short* ismoved){
 		return 0;
 	}
 	if(pos % 8 >= 1){
-		if(inspeact(board, pos - 1, board[pos])){*possible = pos - 1; possible++; count++;
-			if(board[pos] & 16 = 16){
-				if(castling(-1, 4){ *possible = pos - 2; possible++; count++; *possible = pos - 3; possible++; count++;}
+		if(inspect(board, pos - 1, board[pos])){*possible = pos - 1; possible++; count++;
+			if(board[pos] & 16 == 16){
+				if(castling(-1, 4)){ *possible = pos - 2; possible++; count++; *possible = pos - 3; possible++; count++;}
 			}
 			else{
-				if(castling(-1, 2){ *possible = pos - 2; possible++; count++; *possible = pos - 3; possible++; count++;}
+				if(castling(-1, 2)){ *possible = pos - 2; possible++; count++; *possible = pos - 3; possible++; count++;}
 			}
 		}
 		if(inspect(board, pos + 7, board[pos])){if(pos + 7 < 64){*possible = pos + 7; possible++; count++;}}		
@@ -101,11 +101,11 @@ short kingmove(short board[], short pos, short* possible, short* ismoved){
 	}
 	if(7 - (pos % 8) >= 1){
 		if(inspect(board, pos + 1, board[pos])){*possible = pos + 1; possible++; count++;
-			if(board[pos] & 16 = 16){
-				if(castling(1, 4){ *possible = pos + 2; possible++; count++;}	
+			if(board[pos] & 16 == 16){
+				if(castling(1, 4)){ *possible = pos + 2; possible++; count++;}	
 			}
 			else{
-				if(castling(1, 2){ *possible = pos + 2; possible++; count++;}	
+				if(castling(1, 2)){ *possible = pos + 2; possible++; count++;}	
 			}
 		}		
 		if(inspect(board, pos - 7, board[pos])){if(pos - 7 > -1)*possible = pos - 7; possible++; count++;}
