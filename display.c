@@ -1,4 +1,5 @@
 #include<stdio.h>
+#define string "r1b1k1nr/p2p1pNp/n2B4/1p1NP2P/6P1/3p1Q2/P1P1K3/q5b1"
 void unit(short board[], short start, char status[]){
     char decode(int value){
         char Wpieces[] = {' ','K', 'Q', 'R', 'B', 'N', 'P'}, Bpieces[] = {' ', 'k', 'q', 'r', 'b', 'n'};
@@ -18,3 +19,40 @@ void display(short b[], char status[]){
         unit(board, i, status);
 	}
 }	
+void fen(char *a, short bo[]){
+	for(int i = 56; i > -1;){
+		if(*a > 97){
+			if(*a == 'p') bo[i] = p;
+			else if(*a == 'n') bo[i] = n;
+			else if(*a == 'b') bo[i] = b;
+			else if(*a == 'r') bo[i] = r;
+			else if(*a == 'q') bo[i] = q;
+			else bo[i] = k;
+			i++;
+		}
+		else if(*a > 65){
+			if(*a == 'P') bo[i] = P;
+			else if(*a == 'N') bo[i] = N;
+			else if(*a == 'B') bo[i] = B;
+			else if(*a == 'R') bo[i] = R;
+			else if(*a == 'Q') bo[i] = Q;
+			else bo[i] = K;
+			i++;
+		}
+		else if(*a > 48){
+			for(int j = 1; j <= (*a - 48); j++) bo[j] = none;
+			i = i + (*a - 48);
+		}
+		else i = i - 16;
+		a++;
+	}
+}
+int main(){
+    int board[64];
+    char status[64];
+    for(int i = 0; i < 64; i++) status[i] = ' ';
+    fen(string, board);
+    display(board, status);
+    return 0;
+}
+
