@@ -13,3 +13,8 @@ void unit(short board[], short start, char status[]){
     printf("|  %c ||  %c ||  %c ||  %c ||  %c ||  %c ||  %c ||  %c ||\n", decode(board[start]), decode(board[start + 1]), decode(board[start + 2]), decode(board[start + 3]), decode(board[start + 4]), decode(board[start + 5]), decode(board[start + 6]), decode(board[start + 7]));
     printf("----------------------------------------\n");
 }
+void display(short b[], char status[]){
+	for(int i = 56; i >= 0; i = i - 8){
+        unit(board, i, status);
+	}
+}	
