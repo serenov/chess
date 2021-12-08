@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "r1b1k1nr/p2p1pNp/n2B4/1p1NP2P/6P1/3p1Q2/P1P1K3/q5b1"
+#define string "8/8/8/8/8/8/8/RKN5/"
 void display(short b[]);
 void fen(char *a, short b[]);
 short const none = 0;
@@ -33,8 +33,8 @@ void fen(char *a, short bo[]){
 			i++;
 		}
 		else if(*a > 48){
-			for(int j = 1; j <= (*a - 48); j++) bo[j] = none;
-			i = i + (*a - 48);
+			for(int j = 1; j <= (*a - 48); j++){ bo[i] = none; i++;};
+			//i = i + (*a - 48);
 		}
 		else i = i - 16;
 		a++;
