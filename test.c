@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "r1b1k1nr/p2p1pNp/n2B4/1p1NP2P/6P1/3p1Q2/P1P1K3/q5b1"
+#define string "5K2/2P4p/P4q2/1p3Ppp/2P3k1/p5p1/5R2/r5b1"
 void display(short b[]);
 void fen(char *a, short b[]);
 short linemove(short board[], short pos, short* possible);
@@ -24,6 +24,7 @@ short kingthreat(short board[], short pos){
 	}
 	possible[0] = linemove(board, pos, possible);
 	for(short i = 1; i <= possible[0]; i++){
+//		printf("%d\n", possible[1]);
 		if(board[possible[i]] % 8 == 2 || board[possible[i]] % 8 == 3) return 1;	
 	}
 	possible[0] = knightmove(board, pos, possible);
@@ -61,7 +62,7 @@ void main(){
 	fen(string, board);
 	po[0] = pawnmove(board, 12, po);
 	arra(po);
-	printf("%d", kingthreat(board, 60));
+	printf("%d \n", kingthreat(board, 61));
 }
 void fen(char *a, short bo[]){
 	for(int i = 56; i > -1;){
@@ -163,7 +164,7 @@ short diagonalmove(short board[], short pos, short *possible){
 	short offs[] = {-9, 9, -7, 7, 0};
 	short tmp, count = 0, *offset = offs;
 	short boundary(short offset){
-		int i = 0;
+		short i = 0;
 		if( offset == 9 || offset == 7){
 			if( offset == 9){
 				if(pos % 8 < pos / 8) i = pos / 8 - pos % 8;
@@ -210,8 +211,8 @@ short linemove(short board[], short pos, short* possible){
 			if(offset == -1) return pos % 8;
 			else return (7 - (pos % 8));
 		}
-		if(offset == 8) return 64;
-		return 0;
+		if(offset == 8) return 7 - (pos/8);
+		return pos / 8;
 	}
 	possible++;
 	for(; *offset != 0; offset++){
@@ -227,7 +228,6 @@ short linemove(short board[], short pos, short* possible){
 			else{
 				if(inspect(board, pos + i * (*offset), board[pos]) == 2){ 
 					*possible = pos + i * (*offset); possible++; count++;
-					break;
 				}
 			}
 		}

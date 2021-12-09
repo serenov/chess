@@ -20,8 +20,8 @@ void linemove(short board[], short pos, short* possible){
 			if(offset = -1) return pos % 8;
 			else return (7 - (pos % 8));
 		}
-		if(offset = 8) return 64;
-		return 0;
+		if(offset = 8) return 7 - (pos/8);
+		return pos/8;
 	}
 	possible++;
 	for(; *offset != 0; offset++){
