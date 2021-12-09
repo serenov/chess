@@ -6,24 +6,41 @@ short linemove(short board[], short pos, short* possible);
 short queenmove(short board[], short pos, short* possible);
 short knightmove(short board[], short pos, short *possible);
 short pawnmove(short board[], short pos, short* possible);
-short kingmove(short board[], short pos, short* possible, short *ismoved);
+short kingmove(short board[], short pos, short* possible);
 short diagonalmove(short board[], short pos, short *possible);
 void arra(short arr[]);
 short const none = 0;
 short const K = 9, Q = 10, R = 11, B = 12, N = 13, P = 14;
 short const k = 17, q = 18, r = 19, b =  20, n = 21, p = 22;
-short checker(short v1, short v2, short con){
-	
+short kingthreat(short board[], short pos){
+	short possible[14];
+	possible[0] = diagonalmove(board, pos, possible);
+	for(short i = 1; i <= possible[0]; i++){
+		if(board[possible[i]] % 8 == 2 || board[possible[i]] % 8 == 4) return 1;
+		if(board[possible[i]] % 8 == 6){ 
+			if(board[pos] > 16) if(possible[i] == pos - 9 || possible[i] == pos - 7) return 1;
+			if(possible[i] == pos + 9 || possible[i] == pos + 7) return 1;	
+		}
+	}
+	possible[0] = linemove(board, pos, possible);
+	for(short i = 1; i <= possible[0]; i++){
+		if(board[possible[i]] % 8 == 2 || board[possible[i]] % 8 == 3) return 1;	
+	}
+	possible[0] = knightmove(board, pos, possible);
+	for(short i = 1; i <= possible[0]; i++){
+		if(board[possible[i]] % 8 == 5) return 1;	
+	}
+	return 0;
 }
 void picker(int value, short board[], short pos, short* possible){
-	short *(piecesmove[])(short, short, short*) = {kingmove, queenmove, linemove, diagonalmove, knightmove, pawnmove};
-	*possible = (*piecesmove[value%8])(boart, pos, possible);
+	short (*piecesmove[])(short*, short, short*) = {kingmove, queenmove, linemove, diagonalmove, knightmove, pawnmove};
+	*possible = (*piecesmove[value%8])(board, pos, possible);
 }
 void movmkr(short destpos, short board[], short pos, short* possible){
 	static short enpos = 0;
 	if(board[enpos] > 22) board[enpos] = 0;
 	if(board[pos] % 8 == 6) if(pos < 16 && pos > 47){ if(destpos == (pos + 16)){ board[pos + 8] = 24; enpos = pos + 8; }else if(destpos == (pos - 16)){ board[pos - 8] = 25; enpos = pos - 8;}}
-	else if(board[pos] % 8 == 1){if(board[pos] > 16)if(!*(possible + 32) *(possible + 32) = 1; else{ if(!*(possible + 29)) *(possible + 29) = 1;}
+	else if(board[pos] % 8 == 1){if(board[pos] > 16)if(!*(possible + 32)) *(possible + 32) = 1; else{ if(!*(possible + 29)) *(possible + 29) = 1;}
 		if(destpos == pos - 2){board[pos - 1] = board[pos - 3]; board[pos + 4] = none;}		
 		if(destpos == pos + 2){board[pos + 1] = board[pos + 4]; board[pos + 4] = none;}		
 	}
@@ -44,6 +61,7 @@ void main(){
 	fen(string, board);
 	po[0] = pawnmove(board, 12, po);
 	arra(po);
+	printf("%d", kingthreat(board, 60));
 }
 void fen(char *a, short bo[]){
 	for(int i = 56; i > -1;){
@@ -166,11 +184,19 @@ short diagonalmove(short board[], short pos, short *possible){
 	for(; *offset != 0; offset++){
 		tmp = boundary(*offset);
 		for(short i = 1; i <= tmp; i++){
-			if(inspect(board, pos + i * (*offset), board[pos])){
-				*possible = pos + i * (*offset); possible++; count++;
-				if(inspect(board, pos + i * (*offset), board[pos]) == 2) break;
+			if(board[pos] % 8 != 1){
+				if(inspect(board, pos + i * (*offset), board[pos])){
+					*possible = pos + i * (*offset); possible++; count++;
+					if(inspect(board, pos + i * (*offset), board[pos]) == 2) break;
+				}
+				else break;
 			}
-			else break;
+			else{
+				if(inspect(board, pos + i * (*offset), board[pos]) == 2){ 
+					*possible = pos + i * (*offset); possible++; count++;
+					break;
+				}
+			}
 		}
 	}
 	return count;
@@ -191,11 +217,19 @@ short linemove(short board[], short pos, short* possible){
 	for(; *offset != 0; offset++){
 		tmp = boundary(*offset);
 		for(short i = 1; i <= tmp; i++){
-			if(inspect(board, pos + i * (*offset), board[pos])){ 
-				*possible = pos + i * (*offset); possible++; count++;
-				if(inspect(board, pos + i * (*offset), board[pos]) == 2) break;	
+			if(board[pos] % 8 != 1){
+				if(inspect(board, pos + i * (*offset), board[pos])){
+					*possible = pos + i * (*offset); possible++; count++;
+					if(inspect(board, pos + i * (*offset), board[pos]) == 2) break;
+				}
+				else break;
 			}
-			else break;
+			else{
+				if(inspect(board, pos + i * (*offset), board[pos]) == 2){ 
+					*possible = pos + i * (*offset); possible++; count++;
+					break;
+				}
+			}
 		}
 	}
 	return count;
