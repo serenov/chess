@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "5K2/2P4p/P4q2/1p3Ppp/2P3k1/p5p1/5R2/r5b1"
+#define string "5N2/2P3p1/P6K/1p3Ppp/2P3k1/p5p1/5R2/r5b1"
 short const K = 9, Q = 10, R = 11, B = 12, N = 13, P = 14;
 short const k = 17, q = 18, r = 19, b =  20, n = 21, p = 22;
 short const none = 0;

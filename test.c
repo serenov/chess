@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "5K2/2P4p/P4q2/1p3Ppp/2P3k1/p5p1/5R2/r5b1"
+#define string "5N2/2P2n2/P6K/1p3Ppp/2P3k1/p5p1/5R2/r5b1"
 void display(short b[]);
 void fen(char *a, short b[]);
 short linemove(short board[], short pos, short* possible);
@@ -17,14 +17,13 @@ short kingthreat(short board[], short pos){
 	possible[0] = diagonalmove(board, pos, possible);
 	for(short i = 1; i <= possible[0]; i++){
 		if(board[possible[i]] % 8 == 2 || board[possible[i]] % 8 == 4) return 1;
-		if(board[possible[i]] % 8 == 6){ 
+		if(board[possible[i]] % 8 == 6){
 			if(board[pos] > 16) if(possible[i] == pos - 9 || possible[i] == pos - 7) return 1;
 			if(possible[i] == pos + 9 || possible[i] == pos + 7) return 1;	
 		}
 	}
 	possible[0] = linemove(board, pos, possible);
 	for(short i = 1; i <= possible[0]; i++){
-//		printf("%d\n", possible[1]);
 		if(board[possible[i]] % 8 == 2 || board[possible[i]] % 8 == 3) return 1;	
 	}
 	possible[0] = knightmove(board, pos, possible);
@@ -62,7 +61,7 @@ void main(){
 	fen(string, board);
 	po[0] = pawnmove(board, 12, po);
 	arra(po);
-	printf("%d \n", kingthreat(board, 61));
+	printf("%d \n", kingthreat(board, 47));
 }
 void fen(char *a, short bo[]){
 	for(int i = 56; i > -1;){
