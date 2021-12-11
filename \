@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "8/2P5/Pq4NK/1p3Ppp/2P3k1/p5p1/5R2/r5b1"
+#define string "5N2/2P5/Pq5K/1p3Ppp/2P3k1/p5p1/5R2/r5b1"
 void display(short b[]);
 void fen(char *a, short b[]);
 short linemove(short board[], short pos, short* possible);
@@ -9,7 +9,6 @@ short pawnmove(short board[], short pos, short* possible);
 short kingmove(short board[], short pos, short* possible);
 short diagonalmove(short board[], short pos, short *possible);
 void arra(short arr[]);
-#include"display.c"
 short const none = 0;
 short const K = 9, Q = 10, R = 11, B = 12, N = 13, P = 14;
 short const k = 17, q = 18, r = 19, b =  20, n = 21, p = 22;
@@ -26,12 +25,14 @@ short kingthreat(short board[], short pos){
 	}
 	possible[0] = linemove(board, pos, possible);
 	for(short i = 1; i <= possible[0]; i++){
+		printf("%d\n", i);
 		if(board[possible[i]] % 8 == 2 || board[possible[i]] % 8 == 3) return 1;	
 	}
-	possible[0] = knightmove(board, pos, possible);
+	/*possible[0] = knightmove(board, pos, possible);
 	for(short i = 1; i <= possible[0]; i++){
 		if(board[possible[i]] % 8 == 5) return 1;	
-	}
+	}*/
+	printf("end\n");
 	return 0;
 }
 void picker(int value, short board[], short pos, short* possible){
@@ -64,20 +65,18 @@ short psmkr(short board[], short pos, short destpos){
 	for(short i = 0; i < 64; i++) b[i] = board[i];
 	b[destpos] = b[pos];
 	b[pos] = none;
+	printf("pos: %d\n", pos);
 	if(board[pos] > 16){if(board[destpos] == k) kp[1] = destpos; return kingthreat(b, kp[1]);}
 	if(board[destpos] == K) kp[0] = destpos;
 	return kingthreat(b, kp[0]);
 }
 void main(){
-	short board[64], po[28];
-	char status[64];
-	for(short i = 0; i < 64; i++) status[i] = ' ';
+	short board[64], po[28], tmp;
 	for(int i = 0; i < 64; i++) board[i] = none;
 	fen(string, board);
-	disply(board, status);
-	po[0] = knightmove(board, 46, po);
+	po[0] = knightmove(board, 61, po);
 	arra(po);
-	printf("%d", kingthreat(board, 47));
+	//printf("%d \n", kingthreat(board, 47));
 }
 void fen(char *a, short bo[]){
 	for(int i = 56; i > -1;){
@@ -213,7 +212,6 @@ short diagonalmove(short board[], short pos, short *possible){
 					*possible = pos + i * (*offset); possible++; count++;
 					break;
 				}
-				else if(!inspect(board, pos + i * (*offset), board[pos]))break;
 			}
 		}
 	}
@@ -246,9 +244,7 @@ short linemove(short board[], short pos, short* possible){
 			else{
 				if(inspect(board, pos + i * (*offset), board[pos]) == 2){ 
 					*possible = pos + i * (*offset); possible++; count++;
-					break;
 				}
-				else if(!inspect(board, pos + i * (*offset), board[pos]))break;
 			}
 		}
 	}
@@ -266,14 +262,14 @@ short knightmove(short board[], short pos, short *possible){
 			if(pos / 8 > 1){*off = -17; off++; count++;}
 			if(pos % 8 > 1){
 				if(pos / 8 < 7){ *off = 6; off++; count++;}
-				if(pos / 8 > 0 ){ *off = -10; off++; count++;}
+				if(pos / 8 > 0 ){ *off = -9; off++; count++;}
 			}
 		}
 		if(pos % 8 < 7){
 			if(pos / 8 < 6){ *off = 17; off++; count++;}
 			if(pos / 8 > 1){*off = -15; off++; count++;}
 			if(pos % 8 < 6){
-				if(pos / 8 < 7){ *off = 10; off++; count++;}
+				if(pos / 8 < 7){ *off = 9; off++; count++;}
 				if(pos / 8 > 0 ){ *off = -6; off++; count++;}
 			}
 		}
@@ -281,19 +277,11 @@ short knightmove(short board[], short pos, short *possible){
 	}
 	offset[0] = list(pos, offset);
 	for(short i = 1; i <= offset[0]; i++){
-		if(board[pos] % 8 == 5){
-			if(!psmkr(board, pos, pos + offset[i])){
-				*possible = pos + offset[i];
-				possible++;
-				count++;
-			}
-		}
-		else{
-			if(inspect(board, pos + offset[i], board[pos]) == 2){
-				*possible = pos + offset[i];
-				possible++;
-				count++;
-			}
+		if(psmkr(board, pos, pos + offset[i])){
+			*possible = pos + offset[i];
+			possible++;
+//		printf("%d, %d\n", psmkr(board, pos, pos + offset[i]), pos + offset[i]);
+			count++;
 		}
 	}
 	return count;

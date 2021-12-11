@@ -1,8 +1,3 @@
-#include<stdio.h>
-#define string "5N2/2P3p1/P6K/1p3Ppp/2P3k1/p5p1/5R2/r5b1"
-short const K = 9, Q = 10, R = 11, B = 12, N = 13, P = 14;
-short const k = 17, q = 18, r = 19, b =  20, n = 21, p = 22;
-short const none = 0;
 void unit(short board[], short start, char status[]){
     char decode(int value){
         char Wpieces[] = {' ','K', 'Q', 'R', 'B', 'N', 'P'}, Bpieces[] = {' ', 'k', 'q', 'r', 'b', 'n', 'p'};
@@ -18,12 +13,12 @@ void unit(short board[], short start, char status[]){
     printf("|     |     |     |     |     |     |     |     |\n");
     printf("------------------------------------------------\n");
 }
-void display(short b[], char status[]){
+void disply(short b[], char status[]){
 	for(int i = 56; i >= 0; i = i - 8){
         unit(b, i, status);
 	}
 }	
-void fen(char *a, short bo[]){
+/*void fen(char *a, short bo[]){
 	for(int i = 56; i > -1;){
 		if(*a > 97){
 			if(*a == 'p') bo[i] = p;
@@ -57,5 +52,5 @@ int main(){
     fen(string, board);
     display(board, status);
     return 0;
-}
+}*/
 
