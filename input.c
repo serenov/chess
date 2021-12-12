@@ -18,9 +18,8 @@ void game(){
 		disply(board, status);
 		printf("PICK A MARKED SQUARE: ");
 		scanf("%hd", &destpos);
-		if(status[destpos] == '*')movmkr(destpos, board, pos, possible);
+		if(status[destpos] == '*'){movmkr(destpos, board, pos, possible); decode(' ');}
 		else{system("clear"); return 0;}
-		decode(' ');
 		system("clear");
 		if(kingthreat(board, kpos[!turn])){
 			for(short i = 0; i < 64; i++){
