@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "8/2Pq4/P3Q1NK/1p3ppp/2P3k1/p5p1/5R2/r5b1"
+#define string "rnbqkbnr/ppppppp1/8/8/5B1p/8/PPPPPPPP/RNBQK2R"
 void display(short b[]);
 void fen(char *a, short b[], short *list);
 short linemove(short board[], short pos, short* possible);
@@ -37,9 +37,10 @@ short kingthreat(short board[], short pos){
 short nonemove(short board[], short pos, short *possible){
 	return 0;
 }
-void picker(short board[], short pos, short* possible){
+short picker(short board[], short pos, short* possible){
 	short (*piecesmove[])(short*, short, short*) = {nonemove, kingmove, queenmove, linemove, diagonalmove, knightmove, pawnmove};
 	*possible = (*piecesmove[board[pos]%8])(board, pos, possible);
+	return *possible;
 }
 void movmkr(short destpos, short board[], short pos, short* possible){
 	static short enpos = 0;
@@ -73,16 +74,20 @@ short psmkr(short board[], short pos, short destpos){
 	if(b[destpos] == K) kp[0] = destpos;
 	return kingthreat(b, kp[0]);
 }
+#include"input.c"
 short main(){
+/*	
 	short board[64], po[34];
 	char status[64];
 	for(short i = 0; i < 64; i++) status[i] = ' ';
 	for(int i = 0; i < 64; i++) board[i] = none;
 	fen(string, board, po + 28);
 	disply(board, status);
-	po[0] = pawnmove(board, 37, po);
+	picker(board, 6, po);
 	arra(po);
 	return 0;
+*/
+	game();
 }
 void fen(char *a, short bo[], short* list){
 	for(int i = 56; i > -1;){
@@ -105,8 +110,7 @@ void fen(char *a, short bo[], short* list){
 			i++;
 		}
 		else if(*a > 48){
-			for(int j = 1; j <= (*a - 48); j++) bo[j] = none;
-			i = i + (*a - 48);
+			for(int j = 1; j <= (*a - 48); j++){ bo[i] = none; i++;}
 		}
 		else i = i - 16;
 		a++;
@@ -263,7 +267,7 @@ short diagonalmove(short board[], short pos, short *possible){
 		for(short i = 1; i <= tmp; i++){
 			if(board[pos] % 8 != 1){
 				if(inspect(board, pos + i * (*offset), board[pos])){
-					if(psmkr(board, pos, pos + i * (*offset))){ 
+					if(!psmkr(board, pos, pos + i * (*offset))){ 
 						*possible = pos + i * (*offset); possible++; count++;}
 					if(inspect(board, pos + i * (*offset), board[pos]) == 2) break;
 				}
@@ -298,7 +302,7 @@ short linemove(short board[], short pos, short* possible){
 		for(short i = 1; i <= tmp; i++){
 			if(board[pos] % 8 != 1){
 				if(inspect(board, pos + i * (*offset), board[pos])){
-					if(psmkr(board, pos, pos + i * (*offset))){ 
+					if(!psmkr(board, pos, pos + i * (*offset))){ 
 						*possible = pos + i * (*offset); possible++; count++;}
 					if(inspect(board, pos + i * (*offset), board[pos]) == 2) break;
 				}

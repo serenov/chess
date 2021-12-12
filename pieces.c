@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "8/8/8/8/8/8/8/RKN5/"
+#define string "rnbqkbnr/pppppppp/8/8/5BN1/8/PPPPPPPP/RNBQK2R"
 void display(short b[]);
 void fen(char *a, short b[]);
 short const none = 0;

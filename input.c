@@ -1,12 +1,45 @@
-void input(){
-	while(!checkmate()){
+#include<stdlib.h>
+void game(){
+	short checkmate = 0, board[64], possible[34], mov = 0, turn;
+	char status[64];
+	for(short i = 0; i < 63; i++) {board[i] = none; status[i] = ' ';}
+	fen(string, board, possible + 28); 
+	short d(short turn){if(turn == 0) return 8; return 16;}
+	short decode(char c){ for(short i = 1; i <= possible[0]; i++) status[possible[i]] = c;}
+	short io(short turn){
 		short pos, destpos;
+		disply(board, status);
 		printf("PICK A PIECE: ");
-		scanf("%d", &pos);
+		scanf("%hd", &pos);
+		if(d(turn) & board[pos] < 8){system("clear"); printf("INVALID SELECTION\n"); return 0;}
 		picker(board, pos, possible);
+		decode('*');
+		system("clear");
+		disply(board, status);
 		printf("PICK A MARKED SQUARE: ");
-		scanf("%d", &destpos);
-		movmkr(destpos, board, pos, possible);
+		scanf("%hd", &destpos);
+		if(status[destpos] == '*')movmkr(destpos, board, pos, possible);
+		else return 0;
+		decode(' ');
+		system("clear");
+		if(kingthreat(board, kpos[!turn])){
+			for(short i = 0; i < 64; i++){
+				if((board[i] & d(!turn)) < 8);
+			       	else{
+					if(picker(board, i, possible)) return 1;
+				}
+			}
+			checkmate = 1;	
+		}
+		return 1;
+
 	}
+	system("clear");
+	do{
+		turn = mov % 2;
+		mov += io(turn);
+	}while(!checkmate);
+	disply(board, status);
+	printf("CHECKMATE BY %d\n", turn);
 }
 		
