@@ -23,7 +23,9 @@ void game(){
 		else{system("clear"); printf("INVALID SQUARE\n"); decode(' '); return 0;}
 		decode(' ');
 		system("clear");
+		printf("%d\n", board[22]);
 		if(kingthreat(board, kpos[!turn])){
+			printf("CHECK ON %s KING!", t(!turn));
 			for(short i = 0; i < 64; i++){
 				if((board[i] & d(!turn)) < 8);
 			       	else{
@@ -42,6 +44,6 @@ void game(){
 		mov += io(turn);
 	}while(!checkmate);
 	disply(board, status);
-	printf("CHECKMATE BY %d\n", turn);
+	printf("CHECKMATE! %s IS VICTORIOUS!\n", t(turn));
 }
 		

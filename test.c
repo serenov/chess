@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR "
+#define string "rnbqkbnr/ppppppp1/8/P7/7p/8/1PPPPPPP/RNBQKBNR "
 void display(short b[]);
 void fen(char *a, short b[], short *list);
 short linemove(short board[], short pos, short* possible);
@@ -45,7 +45,7 @@ short picker(short board[], short pos, short* possible){
 void movmkr(short destpos, short board[], short pos, short* possible){
 	static short enpos = 0;
 	if(board[enpos] > 22) board[enpos] = 0;
-	if(board[pos] % 8 == 6) if(pos < 16 && pos > 47){ if(destpos == (pos + 16)){ board[pos + 8] = 24; enpos = pos + 8; }else if(destpos == (pos - 16)){ board[pos - 8] = 25; enpos = pos - 8;}}
+	if(board[pos] % 8 == 6) if(pos < 16 && pos > 47){printf("hai"); if(destpos == (pos + 16)){ board[pos + 8] = 24; enpos = pos + 8; }else if(destpos == (pos - 16)){ board[pos - 8] = 25; enpos = pos - 8;}}
 	else if(board[pos] % 8 == 1){if(board[pos] > 16){if(!*(possible + 32)) *(possible + 32) = 1; kpos[1] = destpos;} else{ if(!*(possible + 29)) *(possible + 29) = 1; kpos[0] = destpos;}
 		if(destpos == pos - 2){board[pos - 1] = board[pos - 3]; board[pos + 4] = none;}		
 		if(destpos == pos + 2){board[pos + 1] = board[pos + 4]; board[pos + 4] = none;}		
