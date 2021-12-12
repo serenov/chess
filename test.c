@@ -1,7 +1,7 @@
 #include<stdio.h>
-#define string "8/2P5/Pq4NK/1p3Ppp/2P3k1/p5p1/5R2/r5b1"
+#define string "8/2Pq4/P3Q1NK/1p3ppp/2P3k1/p5p1/5R2/r5b1"
 void display(short b[]);
-void fen(char *a, short b[]);
+void fen(char *a, short b[], short *list);
 short linemove(short board[], short pos, short* possible);
 short queenmove(short board[], short pos, short* possible);
 short knightmove(short board[], short pos, short *possible);
@@ -34,9 +34,12 @@ short kingthreat(short board[], short pos){
 	}
 	return 0;
 }
-void picker(int value, short board[], short pos, short* possible){
-	short (*piecesmove[])(short*, short, short*) = {kingmove, queenmove, linemove, diagonalmove, knightmove, pawnmove};
-	*possible = (*piecesmove[value%8])(board, pos, possible);
+short nonemove(short board[], short pos, short *possible){
+	return 0;
+}
+void picker(short board[], short pos, short* possible){
+	short (*piecesmove[])(short*, short, short*) = {nonemove, kingmove, queenmove, linemove, diagonalmove, knightmove, pawnmove};
+	*possible = (*piecesmove[board[pos]%8])(board, pos, possible);
 }
 void movmkr(short destpos, short board[], short pos, short* possible){
 	static short enpos = 0;
@@ -56,6 +59,8 @@ void movmkr(short destpos, short board[], short pos, short* possible){
 			if(pos == 7) if(!*(possible + 30)) *(possible + 30) = 1;
 		}	
 	}
+	board[destpos] = board[pos];
+	board[pos] = none;
 }
 short psmkr(short board[], short pos, short destpos){
 	short b[64], kp[2];
@@ -64,39 +69,39 @@ short psmkr(short board[], short pos, short destpos){
 	for(short i = 0; i < 64; i++) b[i] = board[i];
 	b[destpos] = b[pos];
 	b[pos] = none;
-	if(board[pos] > 16){if(board[destpos] == k) kp[1] = destpos; return kingthreat(b, kp[1]);}
-	if(board[destpos] == K) kp[0] = destpos;
+	if(board[pos] > 16){if(b[destpos] == k) kp[1] = destpos; return kingthreat(b, kp[1]);}
+	if(b[destpos] == K) kp[0] = destpos;
 	return kingthreat(b, kp[0]);
 }
-void main(){
-	short board[64], po[28];
+short main(){
+	short board[64], po[34];
 	char status[64];
 	for(short i = 0; i < 64; i++) status[i] = ' ';
 	for(int i = 0; i < 64; i++) board[i] = none;
-	fen(string, board);
+	fen(string, board, po + 28);
 	disply(board, status);
-	po[0] = knightmove(board, 46, po);
+	po[0] = pawnmove(board, 37, po);
 	arra(po);
-	printf("%d", kingthreat(board, 47));
+	return 0;
 }
-void fen(char *a, short bo[]){
+void fen(char *a, short bo[], short* list){
 	for(int i = 56; i > -1;){
 		if(*a > 97){
 			if(*a == 'p') bo[i] = p;
 			else if(*a == 'n') bo[i] = n;
 			else if(*a == 'b') bo[i] = b;
-			else if(*a == 'r') bo[i] = r;
+			else if(*a == 'r'){ bo[i] = r; if(i == 0) *(list) = 1; if(i == 7) *(list + 2);}
 			else if(*a == 'q') bo[i] = q;
-			else {bo[i] = k; kpos[1] = i;}
+			else {bo[i] = k; kpos[1] = i; if(i == 4) *(list + 4) = 1;}
 			i++;
 		}
 		else if(*a > 65){
 			if(*a == 'P') bo[i] = P;
 			else if(*a == 'N') bo[i] = N;
 			else if(*a == 'B') bo[i] = B;
-			else if(*a == 'R') bo[i] = R;
+			else if(*a == 'R'){ bo[i] = R; if(i == 56) *(list + 3) = 1; if(i == 63) *(list + 5);}
 			else if(*a == 'Q') bo[i] = Q;
-			else {bo[i] = K; kpos[0] = i;}
+			else {bo[i] = K; kpos[0] = i; if(i == 60) *(list + 1) = 1;}
 			i++;
 		}
 		else if(*a > 48){
@@ -118,7 +123,53 @@ short queenmove(short board[], short pos, short* possible){
 	count += diagonalmove(board, pos, possible);
        return count;	
 }
-	
+short pawnmove(short board[], short pos, short* possible){
+	short offset[5], count = 0;
+	possible++;
+	short color = (board[pos] > 16)? -1: 1;
+	short list(short pos, short *off){
+		short count = 0;
+		off++;
+		if(color == 1){
+			if(pos / 8 < 8 && board[pos + 8] == none){ 
+				*off = 8; off++; count++;
+				if(pos / 8 == 1 && board[pos + 16] == none){ *off = 16; off++; count++;}
+			}
+			if(pos % 8 > 0){
+				if(inspect(board, pos + 7, board[pos]) == 2 || board[pos] == 25){
+					*off = 7; off++; count++;
+				}
+				if(inspect(board, pos + 9, board[pos]) == 2 || board[pos] == 25){
+					*off = 9; off++; count++;
+				}
+			}
+		}
+		else{
+			if(pos / 8 > -1 && board[pos - 8] == none){ 
+				*off = -8; off++; count++;
+				if(pos / 8 == 6 && board[pos - 16] == none){ *off = -16; off++; count++;}
+			}
+			if(pos % 8 > 0){
+				if(inspect(board, pos - 7, board[pos]) == 2 || board[pos] == 24){
+					*off = -7; off++; count++;
+				}
+				if(inspect(board, pos - 9, board[pos]) == 2 || board[pos] == 24){
+					*off = -9; off++; count++;
+				}
+			}
+		}
+		return count;
+	}
+	offset[0] = list(pos, offset);
+	for(short i = 1; i <= offset[0]; i++){
+		if(!psmkr(board, pos, pos + offset[i])){
+			*possible = pos + offset[i];
+			count++; possible++;
+		}
+	}
+	return count;
+}
+/*	
 short pawnmove(short board[], short pos, short* possible){
 	short count = 0;
 	possible++;
@@ -135,45 +186,55 @@ short pawnmove(short board[], short pos, short* possible){
 		if(pos % 8 < 7)if(inspect(board, pos + 9, board[pos]) == 2 || board[pos + 9] == 25){*possible = pos + 9; possible++; count++;}
 	}
 	return count;
+}*/
+short castling(short board[], short pos, short *ismoved, short offset){
+        if(*ismoved);
+        else if(*(ismoved + offset));
+        else{
+                if(offset == -1)if(board[pos - 2] == none);
+                else if(offset == 1)if(board[pos + 2] == none && board[pos + 3] == none);
+                else return 0;
+                return 1;
+        }
+        return 0;
 }
-short kingmove(short board[], short pos, short* possible){
-	short count = 0, *ismoved = possible + 28;
-	possible++;
-	short castling(short v, short start){
-		ismoved += start;	
-		for(int i = 1; i < 3; i++){ if(*ismoved) return 0; ismoved++;}
-		if(v == 1) if(board[pos + 2] == none) return 1;
-		if(*(ismoved - 3)) return 0;
-		if(board[pos - 2] == none && board[pos - 3] == none) return 1;
-		return 0;
-	}
-	if(pos % 8 >= 1){
-		if(inspect(board, pos - 1, board[pos])){*possible = pos - 1; possible++; count++;
-			if(board[pos] & 16 == 16){
-				if(castling(-1, 4)){ *possible = pos - 2; possible++; count++; *possible = pos - 3; possible++; count++;}
-			}
-			else{
-				if(castling(-1, 2)){ *possible = pos - 2; possible++; count++; *possible = pos - 3; possible++; count++;}
-			}
-		}
-		if(inspect(board, pos + 7, board[pos])){if(pos + 7 < 64){*possible = pos + 7; possible++; count++;}}		
-		if(inspect(board, pos - 9, board[pos])){if(pos - 9 > 0){*possible = pos - 9; possible++; count++;}}		
-	}
-	if(7 - (pos % 8) >= 1){
-		if(inspect(board, pos + 1, board[pos])){*possible = pos + 1; possible++; count++;
-			if(board[pos] & 16 == 16){
-				if(castling(1, 4)){ *possible = pos + 2; possible++; count++;}	
-			}
-			else{
-				if(castling(1, 2)){ *possible = pos + 2; possible++; count++;}	
-			}
-		}		
-		if(inspect(board, pos - 7, board[pos])){if(pos - 7 > -1)*possible = pos - 7; possible++; count++;}
-		if(inspect(board, pos + 9, board[pos])){if(pos + 9 < 64){*possible = pos + 9; possible++; count++;}}
-	}
-	if(inspect(board, pos + 8, board[pos])){if(pos + 8 < 64){*possible = pos + 8; possible++; count++;}}
-	if(inspect(board, pos - 8, board[pos])){if(pos - 8 > -1){*possible = pos - 8; possible++; count++;}}
-	return count;
+short kingmove(short board[], short pos, short *possible){
+        short offset[9], count = 0;
+        possible++;
+        short color = (board[pos] > 16)? 32: 29;
+        short list(short pos, short *off){
+                short count = 0;
+                off++;
+                if(pos / 8 < 7){
+                        *off = 8; off++; count++;
+                        if(pos % 8 > 0){ *off = 7; off++; count++;}
+                        if(pos % 8 < 7){ *off = 9; off++; count++;}
+                }
+                if(pos / 8 > 0){
+                        *off = -8; off++; count++;
+                        if(pos % 8 > 0){ *off = -9; off++; count++;}
+                        if(pos % 8 < 7){ *off = -7; off++; count++;}
+                }
+                if(pos % 8 > 0){ *off = -1; off++; count++;}
+                if(pos % 8 < 7){ *off = 1; off++; count++;}
+		return count;
+        }
+        offset[0] = list(pos, offset);
+        for(short i = 1; i <= offset[0]; i++){
+                if(inspect(board, pos + offset[i], board[pos])){
+                        if(!(psmkr(board, pos, pos + offset[i]))){
+                                *possible = pos + offset[i];
+                                count ++; possible++;
+                                if(castling(board, pos, possible + color - count - 1, offset[i])){
+                                        if(!psmkr(board, pos, pos + 2 * offset[i])){
+                                                *possible = pos + 2 * (offset[i]);
+                                                count ++; possible++;
+                                        }
+                                }
+                        }
+                }
+        }
+        return count;
 }
 short diagonalmove(short board[], short pos, short *possible){
 	short offs[] = {-9, 9, -7, 7, 0};
@@ -282,10 +343,12 @@ short knightmove(short board[], short pos, short *possible){
 	offset[0] = list(pos, offset);
 	for(short i = 1; i <= offset[0]; i++){
 		if(board[pos] % 8 == 5){
-			if(!psmkr(board, pos, pos + offset[i])){
-				*possible = pos + offset[i];
-				possible++;
-				count++;
+			if(inspect(board, pos + offset[i], board[pos])){
+				if(!psmkr(board, pos, pos + offset[i])){
+					*possible = pos + offset[i];
+					possible++;
+					count++;
+				}
 			}
 		}
 		else{
@@ -298,27 +361,6 @@ short knightmove(short board[], short pos, short *possible){
 	}
 	return count;
 }
-/*short knightmove(short board[], short pos, short *possible){
-	short count = 0;
-	possible++;
-	if(pos % 8 >= 1){
-		if(pos % 8 >= 2){
-			if(inspect(board, pos + 6, board[pos])){if(pos + 6 < 64){if(psmkr(board, pos, pos + i * (*offset))){*possible = pos + 6; possible++; count++;}}}
-			if(inspect(board, pos - 10, board[pos])) {if(pos - 10 > -1){ if(psmkr(board, pos, pos + i * (*offset))){*possible = pos - 10; possible++; count++;}}}
-		}
-		if(inspect(board, pos + 15, board[pos])){ if(pos + 15 < 64){if(psmkr(board, pos, pos + i * (*offset))){*possible = pos + 15; possible++; count++;}}}
-		if(inspect(board, pos - 17, board[pos])){if(pos - 15 > -1){ if(psmkr(board, pos, pos + i * (*offset))){*possible = pos - 17; possible++; count++;}}}
-	}	
-	if(7 - (pos % 8) >= 1){
-		if(7 - (pos % 8) >= 2){
-			if(inspect(board, pos - 6, board[pos])) {if(pos - 6 > -1){if(psmkr(board, pos, pos + i * (*offset))){*possible = pos - 6; possible++; count++;}}}
-			if(inspect(board, pos + 10, board[pos])) {if(pos + 10 < 64){if(psmkr(board, pos, pos + i * (*offset))){*possible = pos + 10; possible++; count++;}}}
-		}
-		if(inspect(board, pos - 15, board[pos])) {if(pos - 15 > -1){if(psmkr(board, pos, pos + i * (*offset))){*possible = pos - 15; possible++; count++;}}}
-		if(inspect(board, pos + 17, board[pos])) {if(pos + 17 < 64){if(psmkr(board, pos, pos + i * (*offset))){*possible = pos + 17; possible++; count++;}}}
-	}
-	return count;
-}*/
 void arra(short arr[28]){
 	for(int i = 1; i <= arr[0]; i++){
 	       printf("%d\n", arr[i]);
