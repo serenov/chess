@@ -4,6 +4,7 @@ void game(){
 	char status[64];
 	for(short i = 0; i < 63; i++) {board[i] = none; status[i] = ' ';}
 	fen(string, board, possible + 28); 
+	char* t(short turn){ if(turn == 0) return "WHITE"; return "BLACK";}
 	short d(short turn){if(turn == 0) return 8; return 16;}
 	short decode(char c){ for(short i = 1; i <= possible[0]; i++) status[possible[i]] = c;}
 	short io(short turn){
@@ -19,7 +20,7 @@ void game(){
 		printf("PICK A MARKED SQUARE: ");
 		scanf("%hd", &destpos);
 		if(status[destpos] == '*')movmkr(destpos, board, pos, possible);
-		else{system("clear"); return 0; decode(' ');}
+		else{system("clear"); printf("INVALID SQUARE\n"); decode(' '); return 0;}
 		decode(' ');
 		system("clear");
 		if(kingthreat(board, kpos[!turn])){
@@ -37,6 +38,7 @@ void game(){
 	system("clear");
 	do{
 		turn = mov % 2;
+		printf("IT'S %s'S TURN\n", t(turn));
 		mov += io(turn);
 	}while(!checkmate);
 	disply(board, status);
