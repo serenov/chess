@@ -11,7 +11,7 @@ void game(){
 		disply(board, status);
 		printf("PICK A PIECE: ");
 		scanf("%hd", &pos);
-		if(d(turn) & board[pos] < 8){system("clear"); printf("INVALID SELECTION\n"); return 0;}
+		if((d(turn) & board[pos]) < 8){system("clear"); printf("INVALID SELECTION\n"); return 0;}
 		picker(board, pos, possible);
 		decode('*');
 		system("clear");
@@ -19,7 +19,7 @@ void game(){
 		printf("PICK A MARKED SQUARE: ");
 		scanf("%hd", &destpos);
 		if(status[destpos] == '*')movmkr(destpos, board, pos, possible);
-		else return 0;
+		else{system("clear"); return 0;}
 		decode(' ');
 		system("clear");
 		if(kingthreat(board, kpos[!turn])){

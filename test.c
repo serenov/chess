@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "rnbqkbnr/ppppppp1/8/8/5B1p/8/PPPPPPPP/RNBQK2R"
+#define string "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR "
 void display(short b[]);
 void fen(char *a, short b[], short *list);
 short linemove(short board[], short pos, short* possible);
