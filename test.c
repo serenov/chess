@@ -145,6 +145,8 @@ short pawnmove(short board[], short pos, short* possible){
 				if(inspect(board, pos + 7, board[pos]) == 2 || board[pos + 7] == 25){
 					*off = 7; off++; count++;
 				}
+			}
+			if(pos % 8 < 7){
 				if(inspect(board, pos + 9, board[pos]) == 2 || board[pos + 9] == 25){
 					*off = 9; off++; count++;
 				}
@@ -156,11 +158,13 @@ short pawnmove(short board[], short pos, short* possible){
 				if(pos / 8 == 6 && board[pos - 16] == none){ *off = -16; off++; count++;}
 			}
 			if(pos % 8 > 0){
-				if(inspect(board, pos - 7, board[pos]) == 2 || board[pos - 7] == 24){
-					*off = -7; off++; count++;
-				}
 				if(inspect(board, pos - 9, board[pos]) == 2 || board[pos - 9] == 24){
 					*off = -9; off++; count++;
+				}
+			}
+			if(pos % 8 > 7){
+				if(inspect(board, pos - 7, board[pos]) == 2 || board[pos - 7] == 24){
+					*off = -7; off++; count++;
 				}
 			}
 		}
