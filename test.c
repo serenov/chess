@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "rnbqkbnr/ppppppp1/8/P7/7p/8/1PPPPPPP/RNBQKBNR "
+#define string "kbK5/pp6/1P6/8/8/8/8/R7"
 void display(short b[]);
 void fen(char *a, short b[], short *list);
 short linemove(short board[], short pos, short* possible);
@@ -18,7 +18,7 @@ short kingthreat(short board[], short pos){
 	short possible[14];
 	possible[0] = diagonalmove(board, pos, possible);
 	for(short i = 1; i <= possible[0]; i++){
-		if(board[possible[i]] % 8 == 2 || board[possible[i]] % 8 == 4) return 1;
+		if(board[possible[i]] % 8 == 2 || board[possible[i]] % 8 == 4 || board[possible[i]] % 8 == 1) return 1;
 		if(board[possible[i]] % 8 == 6){
 			if(board[pos] > 16) if(possible[i] == pos - 9 || possible[i] == pos - 7) return 1;
 			if(possible[i] == pos + 9 || possible[i] == pos + 7) return 1;	

@@ -23,13 +23,11 @@ void game(){
 		else{system("clear"); printf("INVALID SQUARE\n"); decode(' '); return 0;}
 		decode(' ');
 		system("clear");
-		printf("%d\n", board[22]);
 		if(kingthreat(board, kpos[!turn])){
-			printf("CHECK ON %s KING!", t(!turn));
 			for(short i = 0; i < 64; i++){
 				if((board[i] & d(!turn)) < 8);
 			       	else{
-					if(picker(board, i, possible)) return 1;
+					if(picker(board, i, possible)){printf("CHECK ON %s KING!\n", t(!turn)); return 1;}
 				}
 			}
 			checkmate = 1;	
