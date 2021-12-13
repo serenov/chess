@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+#define string "rnbqkbnr/1ppppppp/8/8/p7/8/PPPPPPPP/RNBQKBNR"
 void display(short b[]);
 void fen(char *a, short b[], short *list);
 short linemove(short board[], short pos, short* possible);
@@ -162,7 +162,7 @@ short pawnmove(short board[], short pos, short* possible){
 					*off = -9; off++; count++;
 				}
 			}
-			if(pos % 8 > 7){
+			if(pos % 8 < 7){
 				if(inspect(board, pos - 7, board[pos]) == 2 || board[pos - 7] == 24){
 					*off = -7; off++; count++;
 				}
