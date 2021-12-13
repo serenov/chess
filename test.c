@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "kbK5/pp6/1P6/8/8/8/8/R7"
+#define string "rnbqkbnr/pppppppp/8/8/8/5B2/PPPPPPNP/RNBQK2R"
 void display(short b[]);
 void fen(char *a, short b[], short *list);
 short linemove(short board[], short pos, short* possible);
@@ -45,18 +45,19 @@ short picker(short board[], short pos, short* possible){
 void movmkr(short destpos, short board[], short pos, short* possible){
 	static short enpos = 0;
 	if(board[enpos] > 22) board[enpos] = 0;
-	if(board[pos] % 8 == 6) if(pos < 16 && pos > 47){printf("hai"); if(destpos == (pos + 16)){ board[pos + 8] = 24; enpos = pos + 8; }else if(destpos == (pos - 16)){ board[pos - 8] = 25; enpos = pos - 8;}}
-	else if(board[pos] % 8 == 1){if(board[pos] > 16){if(!*(possible + 32)) *(possible + 32) = 1; kpos[1] = destpos;} else{ if(!*(possible + 29)) *(possible + 29) = 1; kpos[0] = destpos;}
-		if(destpos == pos - 2){board[pos - 1] = board[pos - 3]; board[pos + 4] = none;}		
-		if(destpos == pos + 2){board[pos + 1] = board[pos + 4]; board[pos + 4] = none;}		
+	if((board[pos] % 8) == 6){ if(pos < 16 && pos > 47){if(destpos == (pos + 16)){ board[pos + 8] = 24; enpos = pos + 8; }else if(destpos == (pos - 16)){ board[pos - 8] = 25; enpos = pos - 8;}}}
+	else if((board[pos] % 8) == 1){printf("hai\n");if(board[pos] > 16){if(!*(possible + 32)) *(possible + 32) = 1; kpos[1] = destpos;} else{ if(!*(possible + 29)) *(possible + 29) = 1; kpos[0] = destpos;}
+		printf("hai\n");
+		if(destpos == pos - 2){board[pos - 1] = board[pos - 4]; board[pos - 4] = none;}		
+		if(destpos == pos + 2){printf("hai\n");board[pos + 1] = board[pos + 3]; board[pos + 3] = none;}		
 	}
-	else if(board[pos] % 8 == 3){
+	else if((board[pos] % 8) == 3){
 		if(board[pos] > 16){
 			if(pos == 56) if(!*(possible + 31)) *(possible + 31) = 1;
 			if(pos == 63) if(!*(possible + 33)) *(possible + 33) = 1;
 		}
 		else{
-			if(pos == 0) if(!*(possible + 28)) *(possible + 29) = 1;
+			if(pos == 0) if(!*(possible + 28)) *(possible + 28) = 1;
 			if(pos == 7) if(!*(possible + 30)) *(possible + 30) = 1;
 		}	
 	}
@@ -95,7 +96,7 @@ void fen(char *a, short bo[], short* list){
 			if(*a == 'p') bo[i] = p;
 			else if(*a == 'n') bo[i] = n;
 			else if(*a == 'b') bo[i] = b;
-			else if(*a == 'r'){ bo[i] = r; if(i == 0) *(list) = 1; if(i == 7) *(list + 2);}
+			else if(*a == 'r'){ bo[i] = r; if(i == 0) *(list) = 1; if(i == 7) *(list + 2) = 1;}
 			else if(*a == 'q') bo[i] = q;
 			else {bo[i] = k; kpos[1] = i; if(i == 4) *(list + 4) = 1;}
 			i++;
@@ -104,7 +105,7 @@ void fen(char *a, short bo[], short* list){
 			if(*a == 'P') bo[i] = P;
 			else if(*a == 'N') bo[i] = N;
 			else if(*a == 'B') bo[i] = B;
-			else if(*a == 'R'){ bo[i] = R; if(i == 56) *(list + 3) = 1; if(i == 63) *(list + 5);}
+			else if(*a == 'R'){ bo[i] = R; if(i == 56) *(list + 3) = 1; if(i == 63) *(list + 5) = 1;}
 			else if(*a == 'Q') bo[i] = Q;
 			else {bo[i] = K; kpos[0] = i; if(i == 60) *(list + 1) = 1;}
 			i++;

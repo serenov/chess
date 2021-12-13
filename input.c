@@ -10,6 +10,9 @@ void game(){
 	short io(short turn){
 		short pos, destpos;
 		disply(board, status);
+		/*for(short i = 28; i < 34; i++){
+			printf("%d\n", *(possible + i));
+		}*/
 		printf("PICK A PIECE: ");
 		scanf("%hd", &pos);
 		if((d(turn) & board[pos]) < 8){system("clear"); printf("INVALID SELECTION\n"); return 0;}
