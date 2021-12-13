@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "rnbqkbnr/pppppppp/8/8/8/5B2/PPPPPPNP/RNBQK2R"
+#define string "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R"
 void display(short b[]);
 void fen(char *a, short b[], short *list);
 short linemove(short board[], short pos, short* possible);
@@ -44,12 +44,12 @@ short picker(short board[], short pos, short* possible){
 }
 void movmkr(short destpos, short board[], short pos, short* possible){
 	static short enpos = 0;
+	if(destpos == enpos){if(board[pos] > 16) board[destpos + 8] = none; else board[destpos - 8] = none;} 
 	if(board[enpos] > 22) board[enpos] = 0;
-	if((board[pos] % 8) == 6){ if(pos < 16 && pos > 47){if(destpos == (pos + 16)){ board[pos + 8] = 24; enpos = pos + 8; }else if(destpos == (pos - 16)){ board[pos - 8] = 25; enpos = pos - 8;}}}
-	else if((board[pos] % 8) == 1){printf("hai\n");if(board[pos] > 16){if(!*(possible + 32)) *(possible + 32) = 1; kpos[1] = destpos;} else{ if(!*(possible + 29)) *(possible + 29) = 1; kpos[0] = destpos;}
-		printf("hai\n");
+	if((board[pos] % 8) == 6){ if(pos < 16 || pos > 47){if(destpos == (pos + 16)){ board[pos + 8] = 24; enpos = pos + 8; }else if(destpos == (pos - 16)){ board[pos - 8] = 25; enpos = pos - 8;}}}
+	else if((board[pos] % 8) == 1){if(board[pos] > 16){if(!*(possible + 32)) *(possible + 32) = 1; kpos[1] = destpos;} else{ if(!*(possible + 29)) *(possible + 29) = 1; kpos[0] = destpos;}
 		if(destpos == pos - 2){board[pos - 1] = board[pos - 4]; board[pos - 4] = none;}		
-		if(destpos == pos + 2){printf("hai\n");board[pos + 1] = board[pos + 3]; board[pos + 3] = none;}		
+		if(destpos == pos + 2){board[pos + 1] = board[pos + 3]; board[pos + 3] = none;}		
 	}
 	else if((board[pos] % 8) == 3){
 		if(board[pos] > 16){
@@ -141,10 +141,10 @@ short pawnmove(short board[], short pos, short* possible){
 				if(pos / 8 == 1 && board[pos + 16] == none){ *off = 16; off++; count++;}
 			}
 			if(pos % 8 > 0){
-				if(inspect(board, pos + 7, board[pos]) == 2 || board[pos] == 25){
+				if(inspect(board, pos + 7, board[pos]) == 2 || board[pos + 7] == 25){
 					*off = 7; off++; count++;
 				}
-				if(inspect(board, pos + 9, board[pos]) == 2 || board[pos] == 25){
+				if(inspect(board, pos + 9, board[pos]) == 2 || board[pos + 9] == 25){
 					*off = 9; off++; count++;
 				}
 			}
@@ -155,10 +155,10 @@ short pawnmove(short board[], short pos, short* possible){
 				if(pos / 8 == 6 && board[pos - 16] == none){ *off = -16; off++; count++;}
 			}
 			if(pos % 8 > 0){
-				if(inspect(board, pos - 7, board[pos]) == 2 || board[pos] == 24){
+				if(inspect(board, pos - 7, board[pos]) == 2 || board[pos - 7] == 24){
 					*off = -7; off++; count++;
 				}
-				if(inspect(board, pos - 9, board[pos]) == 2 || board[pos] == 24){
+				if(inspect(board, pos - 9, board[pos]) == 2 || board[pos - 9] == 24){
 					*off = -9; off++; count++;
 				}
 			}
