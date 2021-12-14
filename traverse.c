@@ -3,7 +3,11 @@ short turnd(short turn){
 	return 16;
 }
 short checkmate(short board[], short kpos){
-	for(short i = 0; i < )
+	if(kingthreat(board, kpos)){
+		for(short i = 0; i < 64; i++){
+			if(picker(board, i, possible))
+		}
+	}
 }
 void search(short board[], short turn){
 	static short count = 0;
