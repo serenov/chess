@@ -30,7 +30,8 @@ void game(){
 			for(short i = 0; i < 64; i++){
 				if((board[i] & d(!turn)) < 8);
 			       	else{
-					if(picker(board, i, possible)){printf("CHECK ON %s KING!\n", t(!turn)); return 1;}
+						if(picker(board, i, possible)){printf("CHECK ON %s'S KING!\n", t(!turn)); return 1;
+					}
 				}
 			}
 			checkmate = 1;	
