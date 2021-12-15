@@ -15,6 +15,7 @@ short checkmate(short board[], short kpos, short *possible){
 void search(short board[], short poss[], short turn){
 	static long int count = 0;
 	static short depth = 0;
+	short capturedpiece = none;
 	short possible[34], b[64], kp[2];
 	kp[0] = kpos[0], kp[1] = kpos[1];
 	for(short i = 28; i < 34; i++)possible[i] = poss[i];
@@ -28,10 +29,11 @@ void search(short board[], short poss[], short turn){
 				count += possible[0];
 				for(short j = 1; j <= possible[0]; j++){
 					depth++;
+					if(board[i] & board[possible[j]] < 8){ capturedpiece = board[possible[j]];}
 					movmkr(possible[j], board, i, possible);
 					search(b, possible, !turn);
 					board[i] = board[possible[j]];
-					board[possible[j]] = none;
+					board[possible[j]] = capturedpiece;
 					kpos[0] = kp[0], kpos[1] = kp[1];
 					depth--;
 				}		
