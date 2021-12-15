@@ -1,5 +1,5 @@
 #include<stdio.h>
-#define string "rnbqkbnr/1ppppppp/8/8/p7/8/PPPPPPPP/RNBQKBNR"
+#define string "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
 void display(short b[]);
 void fen(char *a, short b[], short *list);
 short linemove(short board[], short pos, short* possible);
@@ -77,6 +77,7 @@ short psmkr(short board[], short pos, short destpos){
 	return kingthreat(b, kp[0]);
 }
 #include"input.c"
+#include"traverse.c"
 short main(){
 /*	
 	short board[64], po[34];
@@ -89,7 +90,11 @@ short main(){
 	arra(po);
 	return 0;
 */
-	game();
+//	game();
+	short board[64], possible[34];
+	for(short i = 0; i < 64; i++) board[i] = none;
+	fen(string, board, possible + 28);
+	search(board, possible, 0);
 }
 void fen(char *a, short bo[], short* list){
 	for(int i = 56; i > -1;){
