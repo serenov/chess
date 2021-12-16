@@ -1,103 +1,230 @@
-// This code is authored by serenov. Feel free to edit.
-#define Q_MAX 27
-#define R_MAX 14
-#define B_MAX 13
-#define K_MAX 8
-#define N_MAX 8
-short inspect(short board[], short pos, short color){
-	if(color > 8) color = 8;
-	else color = 0;
-	if(board[pos] == none) return 1;
-	else if(color < board[pos] ) return 0;  
-	return 1;
-}
-void linemove(short board[], short pos, short* possible){
-	short const offs[] = {-1, 1, 8, -8, 0};
-	short tmp, *offset = offs;
+short queenmove(short board[], short pos, short* possible){
+	int count = linemove(board, pos, possible);
+	possible += count;
+	count += diagonalmove(board, pos, possible);
+       return count;	
+}	
+short listp(short board[], short pos, short *off){
 	short count = 0;
-	short boundary(short offset){
-		if( offset = -1 || offset = 1){
-			if(offset = -1) return pos % 8;
-			else return (7 - (pos % 8));
+	off++;
+	if(color == 1){
+		if(pos / 8 < 8 && board[pos + 8] == none){ 
+			*off = 8; off++; count++;
+			if(pos / 8 == 1 && board[pos + 16] == none){ *off = 16; off++; count++;}
 		}
-		if(offset = 8) return 64;
-		return 0;
-	}
-	possible++;
-	for(; *offset != 0; offset++){
-		tmp = boundary(*offset);
-		for(short i = 1; i <= tmp; i++){
-			if(inspect(board[pos], pos + i * (*offset), board[pos])){ 
-				*possible = pos + i * (*offset); possible++; count++;
+		if(pos % 8 > 0){
+			if(inspect(board, pos + 7, board[pos]) == 2 || board[pos + 7] == 25){
+				*off = 7; off++; count++;
 			}
 		}
-	}
-	*(possible - count - 1) = count; 
-}
-void diagonalmove(short board[], short pos, short *possible){
-	short const offs[] = {-9, 9, -7, 7, 0};
-	short tmp, count = 0, *offset = offs;
-	short boundary(short offset){
-		if( offset = -9 || offset = 7) return pos % 8;
-		return (7 - (pos % 8));
-	}
-	for(; *offset != 0; offset++){
-		tmp = boundary(*offset);
-		for(short i = 1; i <= tmp; i++){
-			if(inspect(board[pos], pos + i * (*offset), board[pos])){
-				*possible = pos + i * (*offset); possible++; count++;
+		if(pos % 8 < 7){
+			if(inspect(board, pos + 9, board[pos]) == 2 || board[pos + 9] == 25){
+				*off = 9; off++; count++;
 			}
 		}
-	}
-	*(possible - count - 1) += count;
-}
-void knightmove(short board[], short pos, short possible[]){
-	//short const offset[] = {-15, 15, -17, 17, -6, 6, -10, 10};
-	short count = 0;
-	if(pos % 8 >= 1){
-		if(pos % 8 >= 2){
-			if(inspect(board[pos], pos + 6), board[pos]) {if(pos + 6 < 64){*possible = pos + 6; possible++; count++;}}
-			if(inspect(board[pos], pos - 10, board[pos])) {if(pos - 15 > -1){ *possible = pos - 10; possible++; count++;}}
-		}
-		if(inspect(board[pos], pos + 15, board[pos])){ if(pos + 15 < 64){*possible = pos + 15; possible++; count++;}}
-		if(inspect(board[pos], pos - 17, board[pos])){if(pos - 15 > -1){ *possible = pos - 17; possible++; count++}}
-	}	
-	if(7 - (pos % 8) >= 1){
-		if(7 - (pos % 8) >= 2){
-			if(inspect(board[pos], pos - 6, board[pos])) {if(pos - 6 > -1){*possible = pos - 6; possible++; count++;}}
-			if(inspect(board[pos], pos + 10, board[pos])) {if(pos + 10 < 64){*possible = pos + 10; possible++; count++;}}
-		}
-		if(inspect(board[pos], pos - 15, board[pos])) {if(pos - 15 > -1){*possible = pos - 15; possible++; count++;}}
-		if(inspect(board[pos], pos + 17, board[pos])) {if(pos + 17 < 64){*possible = pos + 17; possible++; count++}}
-	}
-	possible[27] = count;
-}
-void kingmove(short board[], short pos, short possible[]){
-	short count = 0;
-	if(pos % 8 >= 1){
-		if(inspect(board[pos], pos - 1, board[pos])){*possible = pos - 1; possible++; count++;}
-		if(inspect(board[pos], pos + 7, board[pos])){if(pos + 7 < 64){*possible = pos + 7; possible; count++;}}		
-		if(inspect(board[pos], pos - 9, board[pos])){if(pos - 9 > 0){*possible = pos - 9; possible; count++;}}		
-	}
-	if(7 - (pos % 8) >= 1){
-		if(inspect(board[pos], pos + 1, board[pos])){*possible = pos + 1; possible++; count++;}
-		if(inspect(board[pos], pos - 7, board[pos])){if(pos - 7 > -1)*possible = pos + 1; possible++; count++;}
-		if(inspect(board[pos], pos + 9, board[pos])){if(pos + 9 < 64){*possible = pos + 9; possible++; count++;}}
-	}
-	if(inspect(board[pos], pos + 8, board[pos])){if(pos + 8 < 64){*possible = pos + 8; possible++; count++;}}
-	if(inspect(board[pos], pos - 8, board[pos])){if(pos - 8 > -1){*possible = pos + 1; possible++; count++;}}
-	possible[27] = count;
-}
-void pawnmove(short board[], short pos, short possible[]){
-	short count = 0;
-	if(board[pos] > 8){
-		if(inspect(board[pos], pos - 8, board[pos])){*possible = pos - 8; possible++; count++}
-		if(pos > 47){if(inspect(board[pos], pos - 16, board[pos])){*possible = pos - 16; possible++; count++}}
 	}
 	else{
-		if(inspect(board[pos], pos + 8, board[pos])){*possible = pos + 8; possible++; count++}
-		if(pos < 16){if(inspect(board[pos], pos + 16, board[pos])){*possible = pos + 16; possible++; count++}}
+		if(pos / 8 > -1 && board[pos - 8] == none){ 
+			*off = -8; off++; count++;
+			if(pos / 8 == 6 && board[pos - 16] == none){ *off = -16; off++; count++;}
+		}
+		if(pos % 8 > 0){
+			if(inspect(board, pos - 9, board[pos]) == 2 || board[pos - 9] == 24){
+				*off = -9; off++; count++;
+			}
+		}
+		if(pos % 8 < 7){
+			if(inspect(board, pos - 7, board[pos]) == 2 || board[pos - 7] == 24){
+				*off = -7; off++; count++;
+			}
+		}
 	}
-	possible[27] = count;
+	return count;
 }
-			
+short pawnmove(short board[], short pos, short* possible){
+	short offset[5], count = 0;
+	possible++;
+	short color = (board[pos] > 16)? -1: 1;
+	offset[0] = listp(pos, offset);
+	for(short i = 1; i <= offset[0]; i++){
+		if(!psmkr(board, pos, pos + offset[i])){
+			*possible = pos + offset[i];
+			count++; possible++;
+		}
+	}
+	return count;
+}
+short castling(short board[], short pos, short *ismoved, short offset){
+        if(*ismoved);
+        else if(*(ismoved + offset));
+        else{
+                if(offset == -1)if(board[pos - 2] == none);
+                else if(offset == 1)if(board[pos + 2] == none && board[pos + 3] == none);
+                else return 0;
+                return 1;
+        }
+        return 0;
+}
+short listk(short board[], short pos, short *off){
+	short count = 0;
+	off++;
+	if(pos / 8 < 7){
+		*off = 8; off++; count++;
+		if(pos % 8 > 0){ *off = 7; off++; count++;}
+		if(pos % 8 < 7){ *off = 9; off++; count++;}
+	}
+	if(pos / 8 > 0){
+		*off = -8; off++; count++;
+		if(pos % 8 > 0){ *off = -9; off++; count++;}
+		if(pos % 8 < 7){ *off = -7; off++; count++;}
+	}
+	if(pos % 8 > 0){ *off = -1; off++; count++;}
+	if(pos % 8 < 7){ *off = 1; off++; count++;}
+	return count;
+}
+short kingmove(short board[], short pos, short *possible){
+        short offset[9], count = 0;
+        possible++;
+        short color = (board[pos] > 16)? 32: 29;
+        offset[0] = listk(pos, offset);
+        for(short i = 1; i <= offset[0]; i++){
+                if(inspect(board, pos + offset[i], board[pos])){
+                        if(!(psmkr(board, pos, pos + offset[i]))){
+                                *possible = pos + offset[i];
+                                count ++; possible++;
+                                if(castling(board, pos, possible + color - count - 1, offset[i])){
+                                        if(!psmkr(board, pos, pos + 2 * offset[i])){
+                                                *possible = pos + 2 * (offset[i]);
+                                                count ++; possible++;
+                                        }
+                                }
+                        }
+                }
+        }
+        return count;
+}
+short boundaryd(short pos, short offset){
+	short i = 0;
+	if( offset == 9 || offset == 7){
+		if( offset == 9){
+			if(pos % 8 < pos / 8) i = pos / 8 - pos % 8;
+			return 7 - pos % 8 - i;
+		}
+		if(pos % 8 > (7 - pos / 8)) i = (pos / 8) - ( 7 - (pos % 8));
+		return pos % 8 - i;
+	}
+	if(offset == -9){
+		if(pos % 8 > pos / 8) i = pos % 8 - pos / 8;
+		return pos % 8 - i;
+		
+	}
+	if(pos % 8 < (7 - pos / 8)) i = (7 - pos / 8) - pos % 8;
+	return 7- pos % 8 - i;
+}
+short diagonalmove(short board[], short pos, short *possible){
+	short offs[] = {-9, 9, -7, 7, 0};
+	short tmp, count = 0, *offset = offs;
+	possible++;
+	for(; *offset != 0; offset++){
+		tmp = boundaryd(pos, *offset);
+		for(short i = 1; i <= tmp; i++){
+			if(board[pos] % 8 != 1){
+				if(inspect(board, pos + i * (*offset), board[pos])){
+					if(!psmkr(board, pos, pos + i * (*offset))){ 
+						*possible = pos + i * (*offset); possible++; count++;}
+					if(inspect(board, pos + i * (*offset), board[pos]) == 2) break;
+				}
+				else break;
+			}
+			else{
+				if(inspect(board, pos + i * (*offset), board[pos]) == 2){ 
+					*possible = pos + i * (*offset); possible++; count++;
+					break;
+				}
+				else if(!inspect(board, pos + i * (*offset), board[pos]))break;
+			}
+		}
+	}
+	return count;
+}
+short boundaryl(short pos, short offset){
+	if( offset == -1 || offset == 1){
+		if(offset == -1) return pos % 8;
+		else return (7 - (pos % 8));
+	}
+	if(offset == 8) return 7 - (pos/8);
+	return pos / 8;
+}
+short linemove(short board[], short pos, short* possible){
+	short count = 0;
+	short offs[] = {-1, 1, 8, -8, 0};
+	short tmp, *offset = offs;
+	possible++;
+	for(; *offset != 0; offset++){
+		tmp = boundaryl(pos, *offset);
+		for(short i = 1; i <= tmp; i++){
+			if(board[pos] % 8 != 1){
+				if(inspect(board, pos + i * (*offset), board[pos])){
+					if(!psmkr(board, pos, pos + i * (*offset))){ 
+						*possible = pos + i * (*offset); possible++; count++;}
+					if(inspect(board, pos + i * (*offset), board[pos]) == 2) break;
+				}
+				else break;
+			}
+			else{
+				if(inspect(board, pos + i * (*offset), board[pos]) == 2){ 
+					*possible = pos + i * (*offset); possible++; count++;
+					break;
+				}
+				else if(!inspect(board, pos + i * (*offset), board[pos]))break;
+			}
+		}
+	}
+	return count;
+}
+short listn(short pos, short *off){
+	short count = 0;
+	off++;
+	if(pos % 8 > 0){
+		if(pos / 8 < 6){ *off = 15; off++; count++;}
+		if(pos / 8 > 1){*off = -17; off++; count++;}
+		if(pos % 8 > 1){
+			if(pos / 8 < 7){ *off = 6; off++; count++;}
+			if(pos / 8 > 0 ){ *off = -10; off++; count++;}
+		}
+	}
+	if(pos % 8 < 7){
+		if(pos / 8 < 6){ *off = 17; off++; count++;}
+		if(pos / 8 > 1){*off = -15; off++; count++;}
+		if(pos % 8 < 6){
+			if(pos / 8 < 7){ *off = 10; off++; count++;}
+			if(pos / 8 > 0 ){ *off = -6; off++; count++;}
+		}
+	}
+	return count;
+}
+short knightmove(short board[], short pos, short *possible){
+	short offset[9];
+	possible++;
+	short count = 0;
+	offset[0] = listn(pos, offset);
+	for(short i = 1; i <= offset[0]; i++){
+		if(board[pos] % 8 == 5){
+			if(inspect(board, pos + offset[i], board[pos])){
+				if(!psmkr(board, pos, pos + offset[i])){
+					*possible = pos + offset[i];
+					possible++;
+					count++;
+				}
+			}
+		}
+		else{
+			if(inspect(board, pos + offset[i], board[pos]) == 2){
+				*possible = pos + offset[i];
+				possible++;
+				count++;
+			}
+		}
+	}
+	return count;
+}
