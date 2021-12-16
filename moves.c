@@ -45,7 +45,7 @@ short pawnmove(short board[], short pos, short* possible){
 	short offset[5], count = 0;
 	possible++;
 	short color = (board[pos] > 16)? -1: 1;
-	offset[0] = listp(pos, offset);
+	offset[0] = listp(board, pos, offset);
 	for(short i = 1; i <= offset[0]; i++){
 		if(!psmkr(board, pos, pos + offset[i])){
 			*possible = pos + offset[i];
@@ -65,7 +65,7 @@ short castling(short board[], short pos, short *ismoved, short offset){
         }
         return 0;
 }
-short listk(short board[], short pos, short *off){
+short listk(short pos, short *off){
 	short count = 0;
 	off++;
 	if(pos / 8 < 7){
