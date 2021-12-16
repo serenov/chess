@@ -1,3 +1,8 @@
+short inspect(short board[], short pos, short color){
+	if(board[pos] == none || board[pos] == 24 || board[pos] == 25) return 1;
+	if((board[pos] & color) < 8) return 2;
+	return 0;
+}
 short queenmove(short board[], short pos, short* possible){
 	int count = linemove(board, pos, possible);
 	possible += count;
@@ -227,4 +232,7 @@ short knightmove(short board[], short pos, short *possible){
 		}
 	}
 	return count;
+}
+short nonemove(short board[], short pos, short *possible){
+	return 0;
 }
