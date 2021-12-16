@@ -90,11 +90,12 @@ short main(){
 	arra(po);
 	return 0;
 */
-//	game();
-	short board[64], possible[34];
+	game();
+/*	short board[64], possible[34];
 	for(short i = 0; i < 64; i++) board[i] = none;
 	fen(string, board, possible + 28);
-	search(board, possible, 0);
+	search(board, possible, 0, 0);
+*/
 }
 void fen(char *a, short bo[], short* list){
 	for(int i = 56; i > -1;){
