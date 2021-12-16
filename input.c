@@ -48,4 +48,3 @@ void game(){
 	disply(board, status);
 	printf("CHECKMATE! %s IS VICTORIOUS!\n", t(turn));
 }
-		
