@@ -1,0 +1,9 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include"pieces.c"
+#include"fen.c"
+#include"moves.h"
+#include"dynamics/check.c"
+#include"dynamics/movedyn.c"
+#include"CLI/display.c"
+#include"CLI/interface.c"
