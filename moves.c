@@ -64,10 +64,12 @@ short castling(short board[], short pos, short *ismoved, short offset){
 	else if(*(ismoved + offset));
 	else{
 		if(offset == -1){
-			if(board[pos - 2] == none);
+			if(board[pos - 2] == none)
+			;
 		}
 		else if(offset == 1){
-			if((board[pos + 2] == none) && (board[pos + 3] == none));
+			if((board[pos + 2] == none) && (board[pos + 3] == none))
+			;
 		}
 		else return 0;
 		return 1;
