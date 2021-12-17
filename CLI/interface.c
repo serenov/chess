@@ -1,7 +1,7 @@
 char* t(short turn){ if(turn == 0) return "WHITE"; return "BLACK";}
 short d(short turn){if(turn == 0) return 8; return 16;}
 short decode(short possible[], char status, char c){ for(short i = 1; i <= possible[0]; i++) status[possible[i]] = c;}
-short io(short board[], short status[], short possible[], short turn, short *checkmate){
+short io(short board[], char status[], short possible[], short turn, short *checkmate){
     short pos, destpos;
     display(board, status);
     printf("PICK A PIECE: ");

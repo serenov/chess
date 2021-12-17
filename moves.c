@@ -9,7 +9,7 @@ short queenmove(short board[], short pos, short* possible){
 	count += diagonalmove(board, pos, possible);
        return count;	
 }	
-short listp(short board[], short pos, short *off){
+short listp(short board[], short pos, short *off, short color){
 	short count = 0;
 	off++;
 	if(color == 1){
@@ -50,7 +50,7 @@ short pawnmove(short board[], short pos, short* possible){
 	short offset[5], count = 0;
 	possible++;
 	short color = (board[pos] > 16)? -1: 1;
-	offset[0] = listp(board, pos, offset);
+	offset[0] = listp(board, pos, offset, color);
 	for(short i = 1; i <= offset[0]; i++){
 		if(!psmkr(board, pos, pos + offset[i])){
 			*possible = pos + offset[i];
@@ -60,15 +60,15 @@ short pawnmove(short board[], short pos, short* possible){
 	return count;
 }
 short castling(short board[], short pos, short *ismoved, short offset){
-        if(*ismoved);
-        else if(*(ismoved + offset));
-        else{
-                if(offset == -1)if(board[pos - 2] == none);
-                else if(offset == 1)if(board[pos + 2] == none && board[pos + 3] == none);
-                else return 0;
-                return 1;
-        }
-        return 0;
+	if(*ismoved);
+	else if(*(ismoved + offset));
+	else{
+		if(offset == -1)if(board[pos - 2] == none);
+		else if(offset == 1)if((board[pos + 2] == none) && (board[pos + 3] == none));
+		else {return 0;}
+		return 1;
+	}
+	return 0;
 }
 short listk(short pos, short *off){
 	short count = 0;
