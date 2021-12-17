@@ -1,8 +1,15 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include"pieces.c"
-#include"fen.c"
+#define string "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+#include"pieces.h"
+#include"fen.h"
 #include"moves.h"
+#include"dynamics/check.h"
+#include"dynamics/movedyn.h"
+#include"CLI/display.h"
+#include"CLI/interface.h"
+#include"fen.c"
+#include"moves.c"
 #include"dynamics/check.c"
 #include"dynamics/movedyn.c"
 #include"CLI/display.c"

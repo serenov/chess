@@ -1,0 +1,1 @@
+short kingthreat(short board[], short pos);

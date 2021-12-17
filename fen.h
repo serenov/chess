@@ -1,0 +1,1 @@
+void fen(char *a, short bo[], short* list);
