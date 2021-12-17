@@ -8,14 +8,14 @@ short io(short board[], char status[], short possible[], short turn, short *chec
     scanf("%hd", &pos);
     if((d(turn) & board[pos]) < 8){system("clear"); printf("INVALID SELECTION\n"); return 0;}
     picker(board, pos, possible);
-    decode('*');
+    decode(possible, status, '*');
     system("clear");
     disply(board, status);
     printf("PICK A MARKED SQUARE: ");
     scanf("%hd", &destpos);
     if(status[destpos] == '*')movmkr(destpos, board, pos, possible);
-    else{system("clear"); printf("INVALID SQUARE\n"); decode(' '); return 0;}
-    decode(' ');
+    else{system("clear"); printf("INVALID SQUARE\n"); decode(possible, status, ' '); return 0;}
+    decode(possible, status, ' ');
     system("clear");
     if(kingthreat(board, kpos[!turn])){
         for(short i = 0; i < 64; i++){
