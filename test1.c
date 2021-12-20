@@ -46,7 +46,11 @@ void movmkr(short destpos, short board[], short pos, short* possible){
 	static short enpos = 0;
 	if(board[enpos] > 22) board[enpos] = 0;
 	if((board[pos] % 8) == 6){ if(pos < 16 || pos > 47){if(destpos == (pos + 16)){ board[pos + 8] = 24; enpos = pos + 8; }else if(destpos == (pos - 16)){ board[pos - 8] = 25; enpos = pos - 8;}}
+<<<<<<< Updated upstream:test1.c
 		//if(destpos == enpos){if(board[pos] > 16) board[destpos + 8] = none; else board[destpos - 8] = none;} 
+=======
+//		if(destpos == enpos){if(board[pos] > 16) board[destpos + 8] = none; else board[destpos - 8] = none;} 
+>>>>>>> Stashed changes:test.c
 	}
 	else if((board[pos] % 8) == 1){if(board[pos] > 16){if(!*(possible + 32)) *(possible + 32) = 1; kpos[1] = destpos;} else{ if(!*(possible + 29)) *(possible + 29) = 1; kpos[0] = destpos;}
 		if(destpos == pos - 2){board[pos - 1] = board[pos - 4]; board[pos - 4] = none;}		
@@ -94,8 +98,14 @@ short main(){
 	short board[64], possible[34];
 	for(short i = 0; i < 64; i++) board[i] = none;
 	fen(string, board, possible + 28);
+<<<<<<< Updated upstream:test1.c
 	search(board, possible, 0, 0);
 
+=======
+	//search(board, possible, 0, 0);
+	possible[0] = pawnmove(board, 15, possible);
+	for(short i = 1; i <= possible[0]; i++) printf("%d\n", possible[i]);
+>>>>>>> Stashed changes:test.c
 }
 void fen(char *a, short bo[], short* list){
 	for(int i = 56; i > -1;){

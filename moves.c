@@ -1,5 +1,5 @@
 short inspect(short board[], short pos, short color){
-	if(board[pos] == none || board[pos] == 24 || board[pos] == 25) return 1;
+	if(board[pos] == none) return 1;
 	if((board[pos] & color) < 8) return 2;
 	return 0;
 }
@@ -9,7 +9,7 @@ short queenmove(short board[], short pos, short* possible){
 	count += diagonalmove(board, pos, possible);
        return count;	
 }	
-short listp(short board[], short pos, short *off, short color){
+short listp(short board[], short pos, short *off, short color, short enpassant){
 	short count = 0;
 	off++;
 	if(color == 1){
@@ -18,12 +18,12 @@ short listp(short board[], short pos, short *off, short color){
 			if(pos / 8 == 1 && board[pos + 16] == none){ *off = 16; off++; count++;}
 		}
 		if(pos % 8 > 0){
-			if(inspect(board, pos + 7, board[pos]) == 2 || board[pos + 7] == 25){
+			if(inspect(board, pos + 7, board[pos]) == 2 || (pos + 7) == enpassant){
 				*off = 7; off++; count++;
 			}
 		}
 		if(pos % 8 < 7){
-			if(inspect(board, pos + 9, board[pos]) == 2 || board[pos + 9] == 25){
+			if(inspect(board, pos + 9, board[pos]) == 2 || (pos + 9) == enpassant){
 				*off = 9; off++; count++;
 			}
 		}
@@ -34,12 +34,12 @@ short listp(short board[], short pos, short *off, short color){
 			if(pos / 8 == 6 && board[pos - 16] == none){ *off = -16; off++; count++;}
 		}
 		if(pos % 8 > 0){
-			if(inspect(board, pos - 9, board[pos]) == 2 || board[pos - 9] == 24){
+			if(inspect(board, pos - 9, board[pos]) == 2 || (pos - 9) == enpassant){
 				*off = -9; off++; count++;
 			}
 		}
 		if(pos % 8 < 7){
-			if(inspect(board, pos - 7, board[pos]) == 2 || board[pos - 7] == 24){
+			if(inspect(board, pos - 7, board[pos]) == 2 || (pos - 7) == enpassant){
 				*off = -7; off++; count++;
 			}
 		}
@@ -50,7 +50,7 @@ short pawnmove(short board[], short pos, short* possible){
 	short offset[5], count = 0;
 	possible++;
 	short color = (board[pos] > 16)? -1: 1;
-	offset[0] = listp(board, pos, offset, color);
+	offset[0] = listp(board, pos, offset, color, *(possible + 33));
 	for(short i = 1; i <= offset[0]; i++){
 		if(!psmkr(board, pos, pos + offset[i])){
 			*possible = pos + offset[i];
