@@ -12,18 +12,18 @@ void init(short *kp){
         *kp = kpos[0];
         *(kp + 1) = kpos[1];
 }
-short count = 0;
+int count = 0;
 void traverse(short board[], short *possible, short turn, short depth){
-        if(depth > 0) return;
+        if(depth > 3) return;
         short kp[2], tpossible[35], capturedpiece = none;
-        init(kp);
+        init(kp); 
         for(short i = 0; i < 7; i++) tpossible[i + 28] = *(possible + i);
         for(short i = 0; i < 64; i++){
                 if(board[i] != none){
                         if((board[i] & turnd(turn)) >= 8){
                                 tpossible[0] = picker(board, i, tpossible);
-                                for(short j = 1; i < tpossible[0]; j++){
-                                        count++;
+                                count += tpossible[0];
+                                for(short j = 1; j <= tpossible[0]; j++){
                                         if(board[tpossible[j]] != none) capturedpiece = board[tpossible[j]];
                                         movmkr(tpossible[j], board, i, tpossible);
                                         traverse(board, tpossible + 28, !turn, depth + 1);
