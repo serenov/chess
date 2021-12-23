@@ -5,9 +5,8 @@ void count(short b[], short possible[], short turn, short depth){
 	if(depth > 3) return;
 	static int cnt = 0;
 	static int co = 0;
-	short pss[34], kp[2], captured = none;
-	short off = (turn == 0)? 1: -1;
-	for(short i = 0; i < 34; i++) pss[i] = possible[i];
+	short pss[35], kp[2], captured = none;
+	for(short i = 0; i < 35; i++) pss[i] = possible[i];
 	kp[0] = kpos[0];
 	kp[1] = kpos[1];
 	for(short i = 0; i < 64; i++){
@@ -18,10 +17,11 @@ void count(short b[], short possible[], short turn, short depth){
 				cnt += pss[0];
 	//			printf("for i = %d, of depth %d, count %d, board[6] is\n", i, depth, cnt);
 				for(short j = 1; j <= pss[0]; j++){
-				       co++;	
 				       	if(b[pss[j]] != none){ captured = b[pss[j]];
-						printf("for i = %d, of depth %d, count %d, board[6] is\n", i, depth, cnt);
-						if(co == 194159) display(b, status); printf("***\n");}
+				       		co++;	
+						printf("for i = %d, of depth %d, count %d, captured by %d at %d\n", i, depth, cnt, i, pss[j]);
+							if(depth == 3)display(b, status); printf("***\n");
+						}
 					movmkr(pss[j], b, i, pss);
 					count(b, pss, !turn, depth + 1);
 					b[i] = b[pss[j]];
@@ -41,7 +41,7 @@ int main(){
 	for(short i = 0; i < 64; i++) board[i] = none;
 	for(short i = 0; i < 64; i++) status[i] = ' ';
 	fen(string, board, possible + 28);
-	count(board, possible, 0, 0);
+	count(board, possible, 1, 0);
 	return 0;
 }
 

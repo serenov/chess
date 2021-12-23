@@ -9,15 +9,15 @@ short io(short board[], char status[], short possible[], short turn, short *chec
     if((d(turn) & board[pos]) < 8){system("clear"); printf("INVALID SELECTION\n"); return 0;}
     picker(board, pos, possible);
     decode(possible, status, '*');
-  //  system("clear");
+    system("clear");
     display(board, status);
     printf("PICK A MARKED SQUARE: ");
     scanf("%hd", &destpos);
     if(status[destpos] == '*')movmkr(destpos, board, pos, possible);
-    else{//system("clear"); 
+    else{system("clear"); 
 	    printf("INVALID SQUARE\n"); decode(possible, status, ' '); return 0;}
     decode(possible, status, ' ');
-    //system("clear");
+    system("clear");
     if(kingthreat(board, kpos[!turn])){
         for(short i = 0; i < 64; i++){
             if((board[i] & d(!turn)) < 8);
@@ -35,6 +35,7 @@ void game(){
 	short checkmate = 0, board[64], possible[35], mov = 0, turn;
 	char status[64];
 	for(short i = 0; i < 63; i++) {board[i] = none; status[i] = ' ';}
+	for(short i = 28; i < 33; i++) possible[i] = 1;
 	fen(string, board, possible + 28); 
 		system("clear");
 	do{
