@@ -1,3 +1,7 @@
+short de(short piece){
+	if(piece > 16) return 1;
+	return 0;
+}
 short kingthreat(short board[], short pos){
 	short possible[14];
 	possible[0] = diagonalmove(board, pos, possible);

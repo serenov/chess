@@ -104,11 +104,13 @@ short kingmove(short board[], short pos, short *possible){
                         if(!(psmkr(board, pos, pos + offset[i]))){
                                 *possible = pos + offset[i];
                                 count ++; possible++;
-				if((offset[i] == 1) || (offset[i] == -1)){
-					if(castling(board, pos, possible + color - count - 1, offset[i])){
-						if(!psmkr(board, pos, pos + 2 * offset[i])){
-							*possible = pos + 2 * (offset[i]);
-							count++; possible++;
+				if(!kingthreat(board, kpos[de(board[pos])])){
+					if((offset[i] == 1) || (offset[i] == -1)){
+						if(castling(board, pos, possible + color - count - 1, offset[i])){
+							if(!psmkr(board, pos, pos + 2 * offset[i])){
+								*possible = pos + 2 * (offset[i]);
+								count++; possible++;
+							}
 						}
 					}
 				}

@@ -21,7 +21,6 @@ void init(short *kp){
         *(kp + 1) = kpos[1];
 }
 int count = 0;
-char status[64];
 void traverse(short board[], short *possible, short turn, short depth){
 	short kp[2];
         short tpossible[35], capturedpiece = none;
@@ -33,22 +32,21 @@ void traverse(short board[], short *possible, short turn, short depth){
                 if(board[i] != none){
                         if((board[i] & turnd(turn)) >= 8){
                                 tpossible[0] = picker(board, i, tpossible);
-                                //if(depth == 4)count += tpossible[0];
+                                if(depth == 4)count += tpossible[0];
                                 for(short j = 1; j <= tpossible[0]; j++){
-                                        if(board[tpossible[j]] != none){count++; capturedpiece = board[tpossible[j]];}
+                                        if(board[tpossible[j]] != none)capturedpiece = board[tpossible[j]];
                                         movmkr(tpossible[j], board, i, tpossible);
                                         traverse(board, tpossible + 28, !turn, depth + 1);
                                         undo(board + tpossible[j], board + i, tpossible + 34, kp, &capturedpiece);
 					tpossible[34] = possible[34];
                                 }
-				printf("count for %d is %d\n", i, count);
 			}
                 }
         }
 }
 int main(){
         short board[64], possible[35];
-        for(short i = 0; i < 64; i++){ board[i] = none; status[i] = ' ';}
+        for(short i = 0; i < 64; i++)board[i] = none;
         for(short i = 28; i < 34; i++) possible[i] = 1;
         fen(string, board, possible + 28);
         traverse(board, possible + 28, 0, 0);
