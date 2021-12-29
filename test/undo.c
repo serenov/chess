@@ -1,5 +1,5 @@
 void revertEnpassant(short *board, short *list){
-        short capturedpiece = (*(list + 2) > 0)? p: P;
+        short capturedpiece = (*(list + 2) > 0)? P: p;
         *(board + *(list + 1) + *(list + 2)) = capturedpiece;
         *(board + *list) = *(board + *(list + 1));
         *(board + *(list + 1)) = none;
@@ -17,5 +17,6 @@ void revertRegular(short *board, short *list){
         *(board + *(list + 1)) = *(list + 2);
 }
 void undo(short *board, short *list, short flag){
-
+        short (*revert[])(short*, short*) = {revertRegular, revertEnpassant, revertCastle};
+	(*revert[flag])(board, list);
 }
