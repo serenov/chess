@@ -1,14 +1,20 @@
-void revertEn(short *board, short *list){
-        short capturedpiece;
-        if(*(list + 2) > 0) capturedpiece = P;
-        else capturedpiece = P;
+void revertEnpassant(short *board, short *list){
+        short capturedpiece = (*(list + 2) > 0)? p: P;
         *(board + *(list + 1) + *(list + 2)) = capturedpiece;
         *(board + *list) = *(board + *(list + 1));
         *(board + *(list + 1)) = none;
 }
-void revertR(short *board, short *list){
+void revertCastle(short *board, short *list){
+        short kingoffs = (*list > 0)? -2: 2;
+        short rookoffs = (kingoffs > 0)? -3: 2;
+        *(board + kingoffs) = *(board);
+        *(board) = none;
+        *(baord + rookoffs) = *(board - *(list));
+        *(baord - *(list)) = none;
+}
+void revertRegular(short *board, short *list){
         *(board + *list) = *(board + *(list + 1));
-        *(board + *(list + 1)) = *(board + *(list + 2));
+        *(board + *(list + 1)) = *(list + 2);
 }
 void undo(short *board, short *list, short flag){
 
