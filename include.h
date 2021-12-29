@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define string "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+//#define string "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R"
+//#define string "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
+#define string "b4K2/8/p1k5/4Q3/P7/8/5B2/8"
 #include"pieces.h"
 #include"fen.h"
 #include"moves.h"

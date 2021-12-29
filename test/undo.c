@@ -17,6 +17,6 @@ void revertRegular(short *board, short *list){
         *(board + *(list + 1)) = *(list + 2);
 }
 void undo(short *board, short *list, short flag){
-        short (*revert[])(short*, short*) = {revertRegular, revertEnpassant, revertCastle};
-	(*revert[flag])(board, list);
+	short (*revert[])(short*, short*) = {revertReg, revertEn, revertcastle};
+        (*revert[flag])(board, list);
 }
