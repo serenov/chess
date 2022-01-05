@@ -36,6 +36,9 @@ void traverse(short board[], short *possible, short turn, short depth){
                                 if(depth == 0)count += tpossible[0];
                                 for(short j = 1; j <= tpossible[0]; j++){
                                         if(board[tpossible[j]] != none)capturedpiece = board[tpossible[j]];
+                                        else if(tpossible[j] == tpossible[34])
+                                        else if(board[i] % 8 == 1)if((i + 2) == tpossibe[j]) else if((i - 2) == tpossible[j])
+                                        else 
                                         movmkr(tpossible[j], board, i, tpossible);
                                         traverse(board, tpossible + 28, !turn, depth + 1);
                                         undo(board + tpossible[j], board + i, kp, &capturedpiece);
