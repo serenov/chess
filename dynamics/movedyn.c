@@ -4,13 +4,11 @@ short picker(short board[], short pos, short* possible){
 	return *possible;
 }
 void movmkr(short destpos, short board[], short pos, short* possible){
+	short t = *(possible + 34);
+	*(possible + 34) = -1;
 	if((board[pos] % 8) == 6){ 
-		if(destpos == *(possible + 34)){if(board[pos] > 16) board[destpos + 8] = none; else board[destpos - 8] = none; *(possible + 34) = - 1;
-		} 
-		else if(pos < 16 || pos > 47){if(destpos == (pos + 16)) *(possible + 34) = (pos + 8); else if(destpos == (pos - 16)) *(possible + 34) = (pos - 8);
-			else *(possible + 34) = -1;
-		}
-		else *(possible + 34) = -1;
+		if(destpos == *(possible + 34)){if(board[pos] > 16) board[destpos + 8] = none; else board[destpos - 8] = none;} 
+		else if(pos < 16 || pos > 47){if(destpos == (pos + 16)) *(possible + 34) = (pos + 8); else if(destpos == (pos - 16)) *(possible + 34) = (pos - 8);}
 	}
 	else if((board[pos] % 8) == 1){if(board[pos] > 16){if(!*(possible + 32)) *(possible + 32) = 1; kpos[1] = destpos;} else{ if(!*(possible + 29)) *(possible + 29) = 1; kpos[0] = destpos;}
 		if(destpos == pos - 2){board[pos - 1] = board[pos - 4]; board[pos - 4] = none;}		
@@ -26,7 +24,6 @@ void movmkr(short destpos, short board[], short pos, short* possible){
 			if(pos == 7) if(!*(possible + 30)) *(possible + 30) = 1;
 		}	
 	}
-	if((board[pos] % 8) != 6) *(possible + 34) = -1;
 	board[destpos] = board[pos];
 	board[pos] = none;
 }
