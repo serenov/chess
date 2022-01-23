@@ -1,4 +1,5 @@
 #include"../include.h"
+#include"undo.c"
 short turnd(short turn){ if(turn == 0) return 8; return 16;}
 short offsetd(short turn){ if(turn == 0) return 8; return -8;}
 short checkmate(short board[], short color, short *possible){
