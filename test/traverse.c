@@ -25,12 +25,11 @@ void FDecide(short board[], short *flag, short i, short tpossible, short list[],
         }
         else if(board[i] % 8 == 1){ if(i + 2 == tpossible || i - 2 == tpossible){ *flag = 2; list[2] = (i + 2 == tpossible)? 1: -1;}}
 }
-
 int count = 0;
 char status[64];
 void traverse(short board[], short *possible, short turn, short depth){
 	short kp[2];
-        short tpossible[35], capturedpiece = none;
+        short tpossible[35], capturedpiece = none, flag, list[3];
         init(kp); 
 	if(kingthreat(board, kp[turn])){if(checkmate(board, turnd(turn), tpossible)) return;}
         if(depth > 4) return;
@@ -46,6 +45,7 @@ void traverse(short board[], short *possible, short turn, short depth){
                                         traverse(board, tpossible + 28, !turn, depth + 1);
                                         undo(board, list, flag);
                                         dinit(kp);
+                                        for(short i = 0; i < 7; i++){ tpossible[i + 28] = *(possible + i);}
 				}
 			}
                 }
