@@ -9,17 +9,23 @@ short checkmate(short board[], short color, short *possible){
 	}
 	return 1;
 }
-void undo(short *pos, short *prevpos, short *kp, short *capturedpiece){
-	*prevpos = *pos;
-	*pos = *capturedpiece;
-        *capturedpiece = none;
-        kpos[0] = *kp;
-        kpos[1] = *(kp + 1);
-}
 void init(short *kp){
         *kp = kpos[0];
         *(kp + 1) = kpos[1];
+}void dinit(short *kp){
+        kpos[0] = *kp;
+        kpos[1] = *(kp + 1);
 }
+void FDecide(short board[], short *flag, short i, short tpossible, short list[], short turn){
+        list[0] = i;
+        list[1] = tpossible;
+        *flag = 0; list[2] = board[tpossible];
+        if(board[i] % 8 == 6){
+                if(i + offsetd(turn, 1) == tpossible || i + offsetd(turn, 2) == tpossible)if(board[tpossible] == none){*flag = 1; list[2] = (turn == 0)? -8: 8; }
+        }
+        else if(board[i] % 8 == 1){ if(i + 2 == tpossible || i - 2 == tpossible){ *flag = 2; list[2] = (i + 2 == tpossible)? 1: -1;}}
+}
+
 int count = 0;
 char status[64];
 void traverse(short board[], short *possible, short turn, short depth){
@@ -35,15 +41,11 @@ void traverse(short board[], short *possible, short turn, short depth){
                                 tpossible[0] = picker(board, i, tpossible);
                                 if(depth == 0)count += tpossible[0];
                                 for(short j = 1; j <= tpossible[0]; j++){
-                                        if(board[tpossible[j]] != none)capturedpiece = board[tpossible[j]];
-                                        else if(tpossible[j] == tpossible[34])
-                                        else if(board[i] % 8 == 1)if((i + 2) == tpossibe[j]) else if((i - 2) == tpossible[j])
-                                        else 
+                                        FDecide(board, &flag, i, tpossible[j], list, turn);
                                         movmkr(tpossible[j], board, i, tpossible);
                                         traverse(board, tpossible + 28, !turn, depth + 1);
-                                        undo(board + tpossible[j], board + i, kp, &capturedpiece);
-					tpossible[34] = -1;
-		//			tpossible[34] = *(possible + 6);
+                                        undo(board, list, flag);
+                                        dinit(kp);
 				}
 			}
                 }
