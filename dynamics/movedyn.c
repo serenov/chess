@@ -7,7 +7,7 @@ void movmkr(short destpos, short board[], short pos, short* possible){
 	short t = *(possible + 34);
 	*(possible + 34) = -1;
 	if((board[pos] % 8) == 6){ 
-		if(destpos == *(possible + 34)){if(board[pos] > 16) board[destpos + 8] = none; else board[destpos - 8] = none;} 
+		if(destpos == t){if(board[pos] > 16) board[destpos + 8] = none; else board[destpos - 8] = none;} 
 		else if(pos < 16 || pos > 47){if(destpos == (pos + 16)) *(possible + 34) = (pos + 8); else if(destpos == (pos - 16)) *(possible + 34) = (pos - 8);}
 		if(possible[13] == -2){ board[pos] = possible[14]; possible[13] = 0;}
 	}

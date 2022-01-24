@@ -12,7 +12,7 @@ short kingthreat(short board[], short pos){
 		}
 		if(board[possible[i]] % 8 == 6){
 			if(board[pos] > 16) if(possible[i] == pos - 9 || possible[i] == pos - 7) return 1;
-			if(possible[i] == pos + 9 || possible[i] == pos + 7) return 1;	
+			else {if(possible[i] == pos + 9 || possible[i] == pos + 7) return 1;}
 		}
 	}
 	possible[0] = linemove(board, pos, possible);
