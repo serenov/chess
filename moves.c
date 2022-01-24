@@ -54,7 +54,8 @@ short pawnmove(short board[], short pos, short* possible){
 	for(short i = 1; i <= offset[0]; i++){
 		if(!psmkr(board, pos, pos + offset[i])){
 			*possible = pos + offset[i];
-			count++; possible++;
+			if(*possible > 55 || *possible < 8){ if(count == 0) *(possible + 12) = -2; for(short j = 1; j < 4; j++) *(possible + j) = *possible; possible += 4; count += 4;}
+			else {count++; possible++;}
 		}
 	}
 	return count;

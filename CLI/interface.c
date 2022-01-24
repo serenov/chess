@@ -9,6 +9,10 @@ short io(short board[], char status[], short possible[], short turn, short *chec
     if((d(turn) & board[pos]) < 8){system("clear"); printf("INVALID SELECTION\n"); return 0;}
     picker(board, pos, possible);
     decode(possible, status, '*');
+    if(board[pos] % 8 == 6) if(possible[0] >= 4)
+	    if(possible[13] == -2){
+		    printf("2 for queen 3 for rook 4 for bishop 5 for knight.\n"); printf("strictly type the numbers given: "); scanf("%hd", possible + 14); possible[14] = 8 + 8 * turn + possible[14];
+	    }
     system("clear");
     display(board, status);
     printf("PICK A MARKED SQUARE: ");
