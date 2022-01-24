@@ -46,7 +46,8 @@ void game(){
 		turn = mov % 2;
 		printf("IT'S %s'S TURN\n", t(turn));
 		mov += io(board, status, possible, turn, &checkmate);
-	}while(!checkmate);
+	}while(!(checkmate || stalemate(board, !turn)));
 	display(board, status);
-	printf("CHECKMATE! %s IS VICTORIOUS!\n", t(turn));
+	if(checkmate == 1)printf("CHECKMATE! %s IS VICTORIOUS!\n", t(turn));
+	else printf("DRAW BY STALEMATE!\n");
 }
