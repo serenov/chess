@@ -11,7 +11,7 @@ short kingthreat(short board[], short pos){
 			if(possible[i] == pos + 9 || possible[i] == pos - 9 || possible[i] == pos + 7 || possible[i] == pos - 7) return 1;
 		}
 		if(board[possible[i]] % 8 == 6){
-			if(board[pos] > 16) if(possible[i] == pos - 9 || possible[i] == pos - 7) return 1;
+			if(board[pos] > 16){ if(possible[i] == pos - 9 || possible[i] == pos - 7) return 1;}
 			else {if(possible[i] == pos + 9 || possible[i] == pos + 7) return 1;}
 		}
 	}
