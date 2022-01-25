@@ -16,7 +16,11 @@ void revertRegular(short *board, short *list){
         *(board + *list) = *(board + *(list + 1));
         *(board + *(list + 1)) = *(list + 2);
 }
+void revertPromotion(short *board, short *list){
+	*(board + *(list + 1)) = (*(list + 1) > 55)? P: p;
+	revertRegular(board, list);
+}
 void undo(short *board, short *list, short flag){
-        void (*revert[])(short*, short*) = {revertRegular, revertEnpassant, revertCastle};
+        void (*revert[])(short*, short*) = {revertRegular, revertEnpassant, revertCastle, revertPromotion};
         (*revert[flag])(board, list);
 }
