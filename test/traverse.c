@@ -1,5 +1,6 @@
 #include"../include.h"
 #include"undo.c"
+#define LIMIT 4
 short turnd(short turn){ if(turn == 0) return 8; return 16;}
 short offsetd(short turn, short flag){
         if(flag == 0){if(turn == 0) return 8; return 16;} else if(flag == 1){ if(turn == 0) return 9; return -9;}
@@ -41,17 +42,17 @@ void traverse(short board[], short *possible, short turn, short depth){
         short tpossible[35], capturedpiece = none, flag, list[3];
         init(kp);
         if(kingthreat(board, kp[turn])){if(checkmate(board, turnd(turn), tpossible))return;}
-        if(depth > 5) return;
+        if(depth > LIMIT) return;
         for(short i = 0; i < 7; i++){ tpossible[i + 28] = *(possible + i);}
         for(short i = 0; i < 64; i++){
                 if(board[i] != none){
                         if((board[i] & turnd(turn)) >= 8){
                                 tpossible[0] = picker(board, i, tpossible);
-                                if(depth == 5)count += tpossible[0];
+                               	if(depth == LIMIT)count += tpossible[0];
                                 for(short j = 1; j <= tpossible[0]; j++){
                                         FDecide(board, &flag, i, tpossible[j], list, turn, tpossible, j);
-					if(depth == 3){if(flag == 2){count++; display(board, status);printf("from the pos : %d, to : %d, at depth %d, count %d\n", i, tpossible[j], depth, count);}}
                                         movmkr(tpossible[j], board, i, tpossible);
+				//	if(depth == 2){if(flag == 2){count++; display(board, status);printf("from the pos : %d, to : %d, at depth %d, count %d\n", i, tpossible[j], depth, count);}}
                                         traverse(board, tpossible + 28, !turn, depth + 1);
                                         undo(board, list, flag);
                                         dinit(kp);
