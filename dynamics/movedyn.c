@@ -28,11 +28,26 @@ void movmkr(short destpos, short board[], short pos, short* possible){
 	board[destpos] = board[pos];
 	board[pos] = none;
 }
+short enoff(short p, short flag){
+	if(flag == 1){
+		if(p > 16) return -9;
+		return 9;
+	}
+	if(flag == 2){
+		if(p > 16) return -7;
+		return 7;
+	}
+	if(p > 16) return 8;
+	return -8;
+}
 short psmkr(short board[], short pos, short destpos){
 	short b[64], kp[2];
 	kp[0] = kpos[0];
 	kp[1] = kpos[1];
 	for(short i = 0; i < 64; i++) b[i] = board[i];
+	if(b[pos] % 8 == 6)if(pos + enoff(b[pos], 1) == destpos || pos + enoff(b[pos], 2) == destpos)if(b[destpos] == none){
+											b[destpos + enoff(b[pos], 0)] = none;
+										}
 	b[destpos] = b[pos];
 	b[pos] = none;
 	if(board[pos] > 16){if(b[destpos] == k) kp[1] = destpos; return kingthreat(b, kp[1]);}

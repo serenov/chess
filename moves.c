@@ -65,13 +65,19 @@ short castling(short board[], short pos, short *ismoved, short offset){
 	else if(*(ismoved + offset));
 	else{
 		if(offset == 1){
-			if(board[pos + 1] == none && board[pos + 2] == none)
-			;
+			if(board[pos + 3] % 8 == 3){
+				if(board[pos + 1] == none && board[pos + 2] == none)
+				;
+				else return 0;
+			}
 			else return 0;
 		}
 		else if(offset == -1){
-			if(board[pos - 1] == none && (board[pos - 2] == none) && (board[pos - 3] == none))
-			;
+			if(board[pos - 4] % 8 == 3){
+				if(board[pos - 1] == none && (board[pos - 2] == none) && (board[pos - 3] == none))
+				;
+				else return 0;
+			}
 			else return 0;
 		}
 		return 1;

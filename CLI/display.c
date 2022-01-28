@@ -14,7 +14,12 @@ void unit(short board[], short start, char status[]){
     printf("------------------------------------------------\n");
 }
 void display(short b[], char status[]){
-	for(int i = 56; i >= 0; i = i - 8){
-        unit(b, i, status);
+	for(short i = 56; i >= 0; i = i - 8){
+ 	       unit(b, i, status);
 	}
 }	
+/*void display(short b[], char status[]){
+	for(short i = 0; i <= 56 ; i += 8){
+		unit(b, i, status);
+	}
+}*/

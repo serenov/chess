@@ -1,6 +1,3 @@
-#include"../include.h"
-#include"undo.c"
-#define LIMIT 4
 short turnd(short turn){ if(turn == 0) return 8; return 16;}
 short offsetd(short turn, short flag){
         if(flag == 0){if(turn == 0) return 8; return 16;} else if(flag == 1){ if(turn == 0) return 9; return -9;}
@@ -22,7 +19,7 @@ void dinit(short *kp){
         kpos[0] = *kp;
         kpos[1] = *(kp + 1);
 }
-int count = 0;
+//int count = 0;
 void FDecide(short board[], short *flag, short i, short tpossible, short list[], short turn, short *possible, short j){
         list[0] = i;
         list[1] = tpossible;
@@ -36,24 +33,40 @@ void FDecide(short board[], short *flag, short i, short tpossible, short list[],
         }
         else if(board[i] % 8 == 1){ if(i + 2 == tpossible || i - 2 == tpossible){*flag = 2; list[2] = (i + 2 == tpossible)? 1: -1;}}
 }
-char status[64];
-void traverse(short board[], short *possible, short turn, short depth){
+short eval(short board[])
+{
+	short v[] = { 0, 100, 8, 5, 3, 3, 1};
+        short score = 0;
+        for(short i = 0; i < 64; i++){
+                score += (board[i] > 16)? -v[board[i] % 8]: v[(board[i] % 8)];
+        }
+        return score;
+}
+//char status[64];
+short traverse(short board[], short *possible, short turn, short depth, short *mov){
         short kp[2];
         short tpossible[35], capturedpiece = none, flag, list[3];
+       	short tt = (turn == 0)? 1: -1, r = -tt * 100, rtemp;
         init(kp);
-        if(kingthreat(board, kp[turn])){if(checkmate(board, turnd(turn), tpossible))return;}
-        if(depth > LIMIT) return;
+        if(kingthreat(board, kp[turn])){if(checkmate(board, turnd(turn), tpossible))return -tt * 100;}
+	if(stalemate(board, turn)) return 0;
+        if(depth > LIMIT) return eval(board);
         for(short i = 0; i < 7; i++){ tpossible[i + 28] = *(possible + i);}
         for(short i = 0; i < 64; i++){
                 if(board[i] != none){
                         if((board[i] & turnd(turn)) >= 8){
                                 tpossible[0] = picker(board, i, tpossible);
-                               	if(depth == LIMIT)count += tpossible[0];
+                             	//if(depth == LIMIT)count += tpossible[0];
                                 for(short j = 1; j <= tpossible[0]; j++){
                                         FDecide(board, &flag, i, tpossible[j], list, turn, tpossible, j);
                                         movmkr(tpossible[j], board, i, tpossible);
-				//	if(depth == 2){if(flag == 2){count++; display(board, status);printf("from the pos : %d, to : %d, at depth %d, count %d\n", i, tpossible[j], depth, count);}}
-                                        traverse(board, tpossible + 28, !turn, depth + 1);
+					//if(depth == 0){display(board, status); printf("score %d, depth %d, from %d to %d, count %d, r value %d\n", eval(board), depth, i, tpossible[j], count, r);}
+                                        rtemp = traverse(board, tpossible + 28, !turn, depth + 1, mov);
+					//if(depth == 0)printf("%d\n", rtemp);
+					if( tt * rtemp > tt * r){
+						r = rtemp;
+						if(depth == 0) { *mov = i; *(mov + 1) = tpossible[j];}
+					}
                                         undo(board, list, flag);
                                         dinit(kp);
                                         for(short i = 0; i < 7; i++){ tpossible[i + 28] = *(possible + i);}
@@ -63,14 +76,16 @@ void traverse(short board[], short *possible, short turn, short depth){
                         }
                 }
         }
-}
+	return r;
+}/*
 int main(){
-        short board[64], possible[35];
-        for(short i = 0; i < 64; i++){board[i] = none; status[i] = ' ';}
+        short board[64], possible[35], move[2];
+        for(short i = 0; i < 64; i++){board[i] = none;}
         for(short i = 28; i < 34; i++) possible[i] = 1;
         possible[34] = -1;
         fen(string, board, possible + 28);
-        traverse(board, possible + 28, 0, 0);
-        printf("count: %d\n", count);
+        traverse(board, possible + 28, 1, 0, move);
+        printf("count: %d %d\n", move[0], move[1]);
         return 0;
 }
+*/
