@@ -52,7 +52,6 @@ short traverse(short board[], short *possible, short turn, short depth, short *m
         if(depth > LIMIT) return eval(board);
         for(short i = 0; i < 7; i++){ tpossible[i + 28] = *(possible + i);}
         for(short i = 0; i < 64; i++){
-		status[i] = ' ';
                 if(board[i] != none){
                         if((board[i] & turnd(turn)) >= 8){
                                 tpossible[0] = picker(board, i, tpossible);

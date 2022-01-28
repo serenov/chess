@@ -19,7 +19,7 @@ short io(short board[], char status[], short possible[], short turn, short *chec
 
     //	checks for appropriate input.
     if((d(turn) & board[pos]) < 8){
-	    system("clear");
+	    system(CLEAR);
 	    printf("INVALID SELECTION\n"); 
 	    return 0;
     }
@@ -39,7 +39,7 @@ short io(short board[], char status[], short possible[], short turn, short *chec
 	   
 	    }
 
-    system("clear");
+    system(CLEAR);
     
     display(board, status);
     printf("PICK A MARKED SQUARE: ");
@@ -47,10 +47,10 @@ short io(short board[], char status[], short possible[], short turn, short *chec
     
    //	checks if the selected sqare is marked.
     if(status[destpos] == '*')movmkr(destpos, board, pos, possible);
-    else{system("clear"); printf("INVALID SQUARE\n"); decode(possible, status, ' '); return 0;}
+    else{system(CLEAR); printf("INVALID SQUARE\n"); decode(possible, status, ' '); return 0;}
     
     decode(possible, status, ' ');
-    system("clear");
+    system(CLEAR);
     //	for check or checkmate.
 jump:
     if(kingthreat(board, kpos[!turn])){
@@ -68,10 +68,11 @@ jump:
 }
 void game(){
 	short checkmate = 0, board[64], possible[35], mov = 0, turn;
+	char status[64];
 	for(short i = 0; i < 64; i++) {board[i] = none; status[i] = ' ';}
 	for(short i = 28; i < 33; i++) possible[i] = 1;
 	fen(string, board, possible + 28); 
-		system("clear");
+		system(CLEAR);
 	do{
 		turn = mov % 2;
 		printf("IT'S %s'S TURN\n", t(turn));

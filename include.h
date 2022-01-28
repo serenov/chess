@@ -1,6 +1,5 @@
 #include<stdio.h>
 #include<stdlib.h>
-char status[64];
 //#define string "r3k2r/8/8/8/8/8/8/5K2"
 //#define string "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R"
 //#define string "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R"
@@ -12,10 +11,11 @@ char status[64];
 //#define string "r2q1k1r/ppp1bB1p/2np4/6N1/3PP1bP/8/PPP5/RNB2RK1"
 //#define string "rnbqkr2/pppp1p1p/4p2p/8/1b1PPQ2/2N4N/PPP2PPP/1K1R1B1R"
 //#define string "8/1Kn1p3/1p5N/4p1q1/4k1N1/3R2p1/Qn2B3/7R"
-#define LIMIT 3
 //#define string "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8"
 //#define string "8/2p5/3p4/KP5r/5R1k/8/4P1P1/8"
 //#define string "b4K2/8/p1k5/4Q3/P7/8/5B2/8"
+#define LIMIT 3
+#define CLEAR "clear"
 #include"pieces.h"
 #include"fen.h"
 #include"moves.h"
@@ -35,3 +35,4 @@ char status[64];
 #include"CLI/interface.c"
 #include"test/traverse.c"
 #include"test/undo.c"
+
