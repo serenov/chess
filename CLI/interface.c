@@ -6,13 +6,13 @@ short io(short board[], char status[], short possible[], short turn, short *chec
     short pos, destpos, move[2];
     
     if(turn == 1){
-	traverse(board, possible, turn, 0, move);
+	traverse(board, possible + 28, turn, 0, move);
     	printf("%d %d\n", move[0], move[1]);
 	picker(board, move[0], possible);
     	movmkr(move[1], board, move[0], possible);
+	//scanf("%hd", move);
 	goto jump;
     }
-    
     display(board, status);
     printf("PICK A PIECE: ");
     scanf("%hd", &pos);
@@ -51,8 +51,8 @@ short io(short board[], char status[], short possible[], short turn, short *chec
     
     decode(possible, status, ' ');
     system("clear");
-jump:
     //	for check or checkmate.
+jump:
     if(kingthreat(board, kpos[!turn])){
         for(short i = 0; i < 64; i++){
             if((board[i] & d(!turn)) < 8);
@@ -68,7 +68,6 @@ jump:
 }
 void game(){
 	short checkmate = 0, board[64], possible[35], mov = 0, turn;
-	char status[64];
 	for(short i = 0; i < 64; i++) {board[i] = none; status[i] = ' ';}
 	for(short i = 28; i < 33; i++) possible[i] = 1;
 	fen(string, board, possible + 28); 

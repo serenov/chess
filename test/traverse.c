@@ -19,7 +19,7 @@ void dinit(short *kp){
         kpos[0] = *kp;
         kpos[1] = *(kp + 1);
 }
-//int count = 0;
+int count = 0;
 void FDecide(short board[], short *flag, short i, short tpossible, short list[], short turn, short *possible, short j){
         list[0] = i;
         list[1] = tpossible;
@@ -42,7 +42,6 @@ short eval(short board[])
         }
         return score;
 }
-//char status[64];
 short traverse(short board[], short *possible, short turn, short depth, short *mov){
         short kp[2];
         short tpossible[35], capturedpiece = none, flag, list[3];
@@ -53,6 +52,7 @@ short traverse(short board[], short *possible, short turn, short depth, short *m
         if(depth > LIMIT) return eval(board);
         for(short i = 0; i < 7; i++){ tpossible[i + 28] = *(possible + i);}
         for(short i = 0; i < 64; i++){
+		status[i] = ' ';
                 if(board[i] != none){
                         if((board[i] & turnd(turn)) >= 8){
                                 tpossible[0] = picker(board, i, tpossible);
@@ -60,10 +60,10 @@ short traverse(short board[], short *possible, short turn, short depth, short *m
                                 for(short j = 1; j <= tpossible[0]; j++){
                                         FDecide(board, &flag, i, tpossible[j], list, turn, tpossible, j);
                                         movmkr(tpossible[j], board, i, tpossible);
-					//if(depth == 0){display(board, status); printf("score %d, depth %d, from %d to %d, count %d, r value %d\n", eval(board), depth, i, tpossible[j], count, r);}
+//					if(depth == 0){display(board, status); printf("score %d, depth %d, from %d to %d, count %d, r value %d\n", eval(board), depth, i, tpossible[j], count, r);}
                                         rtemp = traverse(board, tpossible + 28, !turn, depth + 1, mov);
 					//if(depth == 0)printf("%d\n", rtemp);
-					if( tt * rtemp > tt * r){
+					if( tt * rtemp >= tt * r){
 						r = rtemp;
 						if(depth == 0) { *mov = i; *(mov + 1) = tpossible[j];}
 					}
@@ -77,8 +77,8 @@ short traverse(short board[], short *possible, short turn, short depth, short *m
                 }
         }
 	return r;
-}/*
-int main(){
+}
+/*int main(){
         short board[64], possible[35], move[2];
         for(short i = 0; i < 64; i++){board[i] = none;}
         for(short i = 28; i < 34; i++) possible[i] = 1;
@@ -87,5 +87,4 @@ int main(){
         traverse(board, possible + 28, 1, 0, move);
         printf("count: %d %d\n", move[0], move[1]);
         return 0;
-}
-*/
+}*/
